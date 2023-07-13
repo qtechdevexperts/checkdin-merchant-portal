@@ -16,29 +16,24 @@ const CouponManager: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    (async () => 
-    {
-      
+    (async () => {
+
       // check for desktop size
-      if(window.innerWidth < 767)
-      {
+      if (window.innerWidth < 767) {
         setIsMobile(true)
       }
-      
+
       // function to check window size
-      const windowUpdate = async () =>
-      {
-          if(window.innerWidth < 767)
-          {
-            setIsMobile(true)
-          }
-          else 
-          {
-            setIsMobile(false);
-          }
+      const windowUpdate = async () => {
+        if (window.innerWidth < 767) {
+          setIsMobile(true)
+        }
+        else {
+          setIsMobile(false);
+        }
       }
 
-      
+
       window.addEventListener('resize', windowUpdate);
       return () => window.removeEventListener('resize', windowUpdate);
     })();

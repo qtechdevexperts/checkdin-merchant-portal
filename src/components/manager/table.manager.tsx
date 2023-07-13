@@ -40,11 +40,11 @@ const CouponManagerTable: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: JSON.parse(userID),
+        // user_id: JSON.parse(userID),
+        user_id: userID,
       }),
     };
 
-    console.log(requestBody);
 
     try {
       let response = await fetch(GET_ITEMS_COUPON_MANAGER_URL, requestBody);

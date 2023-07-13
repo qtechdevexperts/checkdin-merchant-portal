@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faL, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   Container,
   Col,
@@ -44,6 +44,8 @@ const Login: React.FC<Props> = () => {
 
     setLoading(true);
 
+    setLoading(false)
+    navigate("/couponmanager");
     // auth_login(username, password)
     //   .then((res: any) => {
     //     setLoading(false);
