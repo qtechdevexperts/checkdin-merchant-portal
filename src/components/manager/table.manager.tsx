@@ -216,7 +216,7 @@ const CouponManagerTable: React.FC = () => {
           <Table hover className="user-table align-items-center">
             <thead>
               <tr>
-                <th className="border-bottom">Time Created</th>
+                {/* <th className="border-bottom">Time Created</th> */}
                 <th className="border-bottom">Coupon ID</th>
                 <th className="border-bottom">Tag</th>
                 <th className="border-bottom">Terms</th>
@@ -247,9 +247,9 @@ const CouponManagerTable: React.FC = () => {
                     }
                     return (
                       <tr key={i}>
-                        <td>
+                        {/* <td>
                           <span className="fw-normal">{'item.timeStamp'}</span>
-                        </td>
+                        </td> */}
                         <td>
                           <span className="fw-normal">{item.coupon_code}</span>
                         </td>
@@ -351,7 +351,7 @@ const CouponManagerTable: React.FC = () => {
           <Table hover className="user-table align-items-center">
             <thead>
               <tr>
-                <th className="border-bottom">Time Created</th>
+                {/* <th className="border-bottom">Time Created</th> */}
                 <th className="border-bottom">Coupon ID</th>
                 <th className="border-bottom">Tag</th>
                 <th className="border-bottom">Terms</th>
@@ -381,9 +381,9 @@ const CouponManagerTable: React.FC = () => {
                     }
                     return (
                       <tr key={i}>
-                        <td>
+                        {/* <td>
                           <span className="fw-normal">{item.timeStamp}</span>
-                        </td>
+                        </td> */}
                         <td>
                           <span className="fw-normal">{item.coupon_code}</span>
                         </td>
