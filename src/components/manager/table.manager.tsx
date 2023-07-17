@@ -22,6 +22,7 @@ import {
   ACTIVE_ITEM_COUPON_MANAGER_URL,
   QR_CODE_COUPON_URL,
 } from "../../constants";
+import axios from "axios";
 
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
@@ -30,6 +31,25 @@ const CouponManagerTable: React.FC = () => {
   const [isQRCode, setQRCodeExist] = useState<boolean>(false);
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
+  const fetchCoupens = async () => {
+    const res = await fetch("http://18.212.236.86/api/v1/coupon/list")
+    let response = await res.json();
+    try {
+      if (res.ok && response) {
+        // console.log("data", response.data)
+        setTable(response.data)
+        setData(response.data)
+      }
+    }
+    catch (err) {
+      console.log("error fetching coupens", err)
+    }
+  }
+  useEffect(() => {
+    fetchCoupens();
+  }, [])
+
 
   const fetchTable = async () => {
     let userID = localStorage.getItem("userID") || "";
@@ -207,16 +227,17 @@ const CouponManagerTable: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {table ? (
-                table.map((item, i) => {
+              {data.length > 0 ? (
+                data.map((item, i) => {
+                  console.log("item", item)
                   let tag = "";
                   let status = "";
 
                   if (item.coupon_type === "User Coupon") {
                     if (item.discount_type === "Fixed") {
-                      tag = "$" + item.discount_amount + " Off";
+                      tag = "$" + item.discount_amount ?? 0 + " Off";
                     } else {
-                      tag = item.discount_amount + "%" + " Off";
+                      tag = item.discount_amount ?? 0 + "%" + " Off";
                     }
 
                     if (item.isActive) {
@@ -227,16 +248,16 @@ const CouponManagerTable: React.FC = () => {
                     return (
                       <tr key={i}>
                         <td>
-                          <span className="fw-normal">{item.timeStamp}</span>
+                          <span className="fw-normal">{'item.timeStamp'}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.UID}</span>
+                          <span className="fw-normal">{item.coupon_code}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{tag}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.coupon_term}</span>
+                          <span className="fw-normal">{item.offer_title}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{item.start_date}</span>
@@ -364,19 +385,19 @@ const CouponManagerTable: React.FC = () => {
                           <span className="fw-normal">{item.timeStamp}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.UID}</span>
+                          <span className="fw-normal">{item.coupon_code}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{tag}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.coupon_term}</span>
+                          <span className="fw-normal">{item.offer_title}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{item.start_date}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.end_date}</span>
+                          <span className="fw-normal">{item.expiry_date}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{status}</span>

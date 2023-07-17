@@ -10,10 +10,12 @@ import Sidebar from "../components/dashboard/sidebar.component";
 import NavBar from "../components/dashboard/navbar.component";
 
 import { RoutePath } from "../router/routes";
+import axios from "axios";
 
 const CouponManager: React.FC = () => {
   const value = "https://chekdin-merchant-coupons.s3.amazonaws.com/07e5a6a9-3b08-4a90-84f3-605bdfbd2050/coupons/a7519222-cb89-4b94-bd76-76888798a8d0.json";
   const [isMobile, setIsMobile] = useState(false);
+
 
   useEffect(() => {
     (async () => {
@@ -32,12 +34,12 @@ const CouponManager: React.FC = () => {
           setIsMobile(false);
         }
       }
-
-
       window.addEventListener('resize', windowUpdate);
       return () => window.removeEventListener('resize', windowUpdate);
     })();
   }, []);
+
+
 
   return (
     <div>

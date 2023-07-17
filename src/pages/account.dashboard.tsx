@@ -28,7 +28,7 @@ const BusinessAccount: React.FC = () => {
   const [hours, setHours] = useState<any>({});
   const [userLoaded, setUserLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [userHash, setUserHash] = useState<Map<any,any>>()
+  const [userHash, setUserHash] = useState<Map<any, any>>()
 
 
 
@@ -60,14 +60,12 @@ const BusinessAccount: React.FC = () => {
   };
 
   useEffect(() => {
-    (async () => 
-    {
+    (async () => {
       // check if user is loaded
       setUserLoaded(false);
-      
+
       // check for desktop size
-      if(window.innerWidth < 767)
-      {
+      if (window.innerWidth < 767) {
         setIsMobile(true)
       }
 
@@ -76,59 +74,52 @@ const BusinessAccount: React.FC = () => {
       console.log(res);
 
       // function to check window size
-      const windowUpdate = async () =>
-      {
-          if(window.innerWidth < 767)
-          {
-            setIsMobile(true)
-          }
-          else 
-          {
-            setIsMobile(false);
-          }
+      const windowUpdate = async () => {
+        if (window.innerWidth < 767) {
+          setIsMobile(true)
+        }
+        else {
+          setIsMobile(false);
+        }
       }
 
-      
+
       window.addEventListener('resize', windowUpdate);
-     
+
 
       //
-      if (res.success) 
-      {
+      if (res.success) {
         console.log(res.data.body);
         let response = JSON.parse(res.data.body);
         setUserHash(await sanitizeUserAttributes(response.UserAttributes))
         // console.log(userHash);
-        
+
 
         // check to see if user ever updated their hours
-        if(response.UserAttributes[9].Name === ("custom:business_hours"))
-        {
+        if (response.UserAttributes[9].Name === ("custom:business_hours")) {
           setHours(getHours(response.UserAttributes[9].Value))
         }
-        else if(response.UserAttributes[8].Name === ("custom:business_hours"))
-        {
+        else if (response.UserAttributes[8].Name === ("custom:business_hours")) {
           setHours(getHours(response.UserAttributes[8].Value))
         }
-        else
-        {
+        else {
           setHours(
-          {
-            'sun_open': 'Cl',
-            'sun_close': 'Cl',
-            'mon_open': 'Cl',
-            'mon_close': 'Cl',
-            'tue_open': 'Cl',
-            'tue_close': 'Cl',
-            'wed_open': 'Cl',
-            'wed_close': 'Cl',
-            'thu_open': 'Cl',
-            'thu_close': 'Cl',
-            'fri_open': 'Cl',
-            'fri_close': 'Cl',
-            'sat_open': 'Cl',
-            'sat_close': 'Cl',
-          })
+            {
+              'sun_open': 'Cl',
+              'sun_close': 'Cl',
+              'mon_open': 'Cl',
+              'mon_close': 'Cl',
+              'tue_open': 'Cl',
+              'tue_close': 'Cl',
+              'wed_open': 'Cl',
+              'wed_close': 'Cl',
+              'thu_open': 'Cl',
+              'thu_close': 'Cl',
+              'fri_open': 'Cl',
+              'fri_close': 'Cl',
+              'sat_open': 'Cl',
+              'sat_close': 'Cl',
+            })
         }
 
         localStorage.setItem("userID", JSON.stringify(response.Username));
@@ -143,19 +134,18 @@ const BusinessAccount: React.FC = () => {
     })();
   }, []);
 
-  const getHours = (hours: any) => 
-  {
+  const getHours = (hours: any) => {
     let newHours = JSON.parse(hours);
     Object.keys(newHours).map((key, index) => {
-      if(newHours[key] == ""){
+      if (newHours[key] == "") {
         newHours[key] = newHours[key] = "12am"
-      } 
-      if(newHours[key].includes(" AM")){
+      }
+      if (newHours[key].includes(" AM")) {
         newHours[key] = newHours[key].replace(" AM", 'am')
-      } else if (newHours[key].includes(" PM")){
+      } else if (newHours[key].includes(" PM")) {
         newHours[key] = newHours[key].replace(" PM", 'pm')
       }
-      if(newHours[key].includes("Closed")){
+      if (newHours[key].includes("Closed")) {
         newHours[key] = "Cl"
       }
     })
@@ -164,14 +154,14 @@ const BusinessAccount: React.FC = () => {
     return newHours
   }
 
-  return ( 
-   <div>
+  return (
+    <div>
       <Sidebar />
       <div className="content">
         <NavBar />
         {isMobile && userLoaded ? (
           <div>
-          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
               <div className="d-block mb-4 mb-md-0">
                 <h4>{userHash?.get('custom:business_name')}</h4>
                 <p className="mb-0">View and manage company profile</p>
@@ -185,19 +175,19 @@ const BusinessAccount: React.FC = () => {
               >
                 <FontAwesomeIcon icon={faPenToSquare} className="me-2" /> Edit Profile
               </Button>
-          </div>
-          <div className="d-flex flex-column mb-3">
-            {/* Details */}
-            <Card border="light" className="shadow-sm mb-4">
-              <Card.Body>
-              <h3 className="mb-4">Business Description</h3>
-              <p>
-                {userHash?.get('custom:business_volume')}
-              </p>
-              </Card.Body>
-            </Card>
+            </div>
+            <div className="d-flex flex-column mb-3">
+              {/* Details */}
+              <Card border="light" className="shadow-sm mb-4">
+                <Card.Body>
+                  <h3 className="mb-4">Business Description</h3>
+                  <p>
+                    {userHash?.get('custom:business_volume')}
+                  </p>
+                </Card.Body>
+              </Card>
 
-            {/* <Card border="light" className="bg-white shadow-sm mb-4">
+              {/* <Card border="light" className="bg-white shadow-sm mb-4">
               <Card.Body>
                 <h3 className="mb-4">Hours</h3>
                 <Table
@@ -231,72 +221,72 @@ const BusinessAccount: React.FC = () => {
             </Card.Body>
           </Card> */}
 
-          <Card border="light" className="bg-white shadow-sm mb-4">
-            <Card.Body>
-              <h5 className="mb-4">Contact</h5>
-              <p>{userHash?.get('phone_number')}</p>
-            </Card.Body>
-          </Card>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <h5 className="mb-4">Contact</h5>
+                  <p>{userHash?.get('phone_number')}</p>
+                </Card.Body>
+              </Card>
 
-          <Card border="light" className="bg-white shadow-sm mb-4">
-              <Card.Body>
-                <h5 className="mb-4">Address</h5>
-                <p>{userHash?.get('custom:business_address')}</p>
-              </Card.Body>
-          </Card>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <h5 className="mb-4">Address</h5>
+                  <p>{userHash?.get('custom:business_address')}</p>
+                </Card.Body>
+              </Card>
 
-          <Card border="light" className="bg-white shadow-sm mb-4">
-              <Card.Body>
-                <h5 className="mb-4">Business Site/Social Media</h5>
-                <p>{userHash?.get('custom:business_website')}</p>
-              </Card.Body>
-          </Card>
-          <Card border="light" className="bg-white shadow-sm mb-4">
-            <Card.Body>
-            <h5 className="mb-4">Profile Picture</h5>
-              <ProfilePictureMenu />
-            </Card.Body>
-          </Card>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <h5 className="mb-4">Business Site/Social Media</h5>
+                  <p>{userHash?.get('custom:business_website')}</p>
+                </Card.Body>
+              </Card>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <h5 className="mb-4">Profile Picture</h5>
+                  <ProfilePictureMenu />
+                </Card.Body>
+              </Card>
+            </div>
           </div>
-        </div>
-        ): userLoaded && !isMobile ?(
+        ) : userLoaded && !isMobile ? (
           <div>
-              <div>
-                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-                  <div className="d-block mb-4 mb-md-0">
-                    <h4>{userHash?.get('custom:business_name')}</h4>
-                    <p className="mb-0">View and manage company profile</p>
-                  </div>
-                  <Button
-                    as={Link}
-                    to={RoutePath.UpdateUser.path}
-                    className="me-2"
-                    variant="primary"
-                    size="lg"
-                  >
-                    <FontAwesomeIcon icon={faPenToSquare} className="me-2" />Edit Profile
-                  </Button>
+            <div>
+              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+                <div className="d-block mb-4 mb-md-0">
+                  <h4>{userHash?.get('custom:business_name')}</h4>
+                  <p className="mb-0">View and manage company profile</p>
                 </div>
-                <Row className="justify-content-md-center">
-                  <Col xs={6} className="px-2">
-                    <Card border="light" className="shadow-sm">
-                      <Card.Body>
-                        <h3 className="mb-4">Business Description</h3>
-                        <p>
-                          {userHash?.get('custom:business_volume')}
-                        </p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col xs={6} className="px-2">
-                    <Card border="light" className="shadow-sm">
-                      <Card.Body>
-                        <h3 className="mb-4">Contact</h3>
-                        <p>{userHash?.get('phone_number')}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  {/* <Col xs={6} className="px-2">
+                <Button
+                  as={Link}
+                  to={RoutePath.UpdateUser.path}
+                  className="me-2"
+                  variant="primary"
+                  size="lg"
+                >
+                  <FontAwesomeIcon icon={faPenToSquare} className="me-2" />Edit Profile
+                </Button>
+              </div>
+              <Row className="justify-content-md-center">
+                <Col xs={6} className="px-2">
+                  <Card border="light" className="shadow-sm">
+                    <Card.Body>
+                      <h3 className="mb-4">Business Description</h3>
+                      <p>
+                        {userHash?.get('custom:business_volume')}
+                      </p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col xs={6} className="px-2">
+                  <Card border="light" className="shadow-sm">
+                    <Card.Body>
+                      <h3 className="mb-4">Contact</h3>
+                      <p>{userHash?.get('phone_number')}</p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                {/* <Col xs={6} className="px-2">
                     <Card border="light" className="bg-white shadow-sm">
                       <Card.Body>
                         <h3 className="mb-4">Hours</h3>
@@ -331,46 +321,46 @@ const BusinessAccount: React.FC = () => {
                       </Card.Body>
                     </Card>
                   </Col> */}
-                </Row>
-                <Row>
-                  <Col xs={6} className="px-2 mt-2">
-                    <Card border="light" className="bg-white shadow-sm mb-4">
-                      <Card.Body>
-                        <h3 className="mb-4">Address</h3>
-                        <p>{userHash?.get('custom:business_address')}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col xs={6} className="px-2 mt-2">
-                    <Card border="light" className="bg-white shadow-sm mb-4">
-                      <Card.Body>
-                        <h3 className="mb-4">Business Site/Social Media</h3>
-                        <p>{userHash?.get('custom:business_website')}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </Row>
-                <Row className="d-flex justify-content-center">
-                  <Col xs={12} className="px-2 mt-2 text-align-center">
-                    <Card border="light" className="bg-white shadow-sm mb-4">
-                      <Card.Body>
+              </Row>
+              <Row>
+                <Col xs={6} className="px-2 mt-2">
+                  <Card border="light" className="bg-white shadow-sm mb-4">
+                    <Card.Body>
+                      <h3 className="mb-4">Address</h3>
+                      <p>{userHash?.get('custom:business_address')}</p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col xs={6} className="px-2 mt-2">
+                  <Card border="light" className="bg-white shadow-sm mb-4">
+                    <Card.Body>
+                      <h3 className="mb-4">Business Site/Social Media</h3>
+                      <p>{userHash?.get('custom:business_website')}</p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row className="d-flex justify-content-center">
+                <Col xs={12} className="px-2 mt-2 text-align-center">
+                  <Card border="light" className="bg-white shadow-sm mb-4">
+                    <Card.Body>
                       <h5 className="mb-4">Profile Picture</h5>
-                        <ProfilePictureMenu />
-                      </Card.Body>
-                    </Card>
-                  </Col>    
-                </Row>
-              </div>
+                      <ProfilePictureMenu />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
             </div>
-        ):
-        (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-          <h4>Loading</h4>
-        </div>
-        )}
+          </div>
+        ) :
+          (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <h4>Loading</h4>
+            </div>
+          )}
       </div>
     </div>
   )

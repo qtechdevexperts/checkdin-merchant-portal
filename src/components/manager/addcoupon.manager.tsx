@@ -76,18 +76,20 @@ const AddCoupon: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        UID: UUID,
-        user_id: JSON.parse(userID),
-        coupon_term,
+        // UID: UUID,
+        // user_id: JSON.parse(userID),
+        offer_title: coupon_term,
         discount_amount,
         discount_type,
         start_date,
-        end_date,
-        isActive: false,
+        expiry_date: end_date,
+        isActive: true,
         coupon_type: coupon_type,
-        redeem_code: redeem_code,
+        coupon_code: redeem_code,
         business_address: business_address,
-        business_name: business_name
+        name: 'Buy one get one',
+        offer_description: 'test',
+        merchant: 1
       }),
     };
 
@@ -233,7 +235,7 @@ const AddCoupon: React.FC = () => {
                       </InputGroup.Text>
                       <Field
                         name="start_date"
-                        type="text"
+                        type="date"
                         className="form-control"
                       />
                     </InputGroup>
@@ -253,7 +255,7 @@ const AddCoupon: React.FC = () => {
                       </InputGroup.Text>
                       <Field
                         name="end_date"
-                        type="text"
+                        type="date"
                         className="form-control"
                       />
                     </InputGroup>
