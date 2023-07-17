@@ -33,7 +33,7 @@ const CouponManagerTable: React.FC = () => {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
   const fetchCoupens = async () => {
-    const res = await fetch("http://18.212.236.86/api/v1/coupon/list")
+    const res = await fetch("https://18.212.236.86/api/v1/coupon/list")
     let response = await res.json();
     try {
       if (res.ok && response) {
