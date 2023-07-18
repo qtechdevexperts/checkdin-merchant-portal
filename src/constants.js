@@ -1,7 +1,8 @@
 // Authentication Constants
 
 export const AUTH_SIGNUP_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signup"
-export const AUTH_SIGNIN_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signin"
+// export const AUTH_SIGNIN_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signin"
+export const AUTH_SIGNIN_URL = "http://18.212.236.86/api/v1/auth/login"
 export const AUTH_SIGNUP_CONFIRMATION_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signupconfirmation"
 export const AUTH_GET_USER_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/getuser"
 export const AUTH_UPDATE_USER_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/updateuser";

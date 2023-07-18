@@ -45,23 +45,33 @@ const Login: React.FC<Props> = () => {
     setLoading(true);
 
     setLoading(false)
-    navigate("/couponmanager");
-    // auth_login(username, password)
-    //   .then((res: any) => {
-    //     setLoading(false);
-    //     console.log(res);
+    // navigate("/couponmanager");
+    auth_login(username, password)
+      .then((res: any) => {
+        setLoading(false);
+        console.log("res==>", res.data.data.access_token);
+        if (res?.data?.data?.access_token) {
+          // setMessage("login Success")
+          navigate("/couponmanager");
+        }
+        else {
+          setMessage("Invalid Credentials");
+          console.log(message);
+          throw new Error(res.errorMessage);
+        }
 
-    //     if (res.errorType) {
-    //       setMessage(res.errorMessage);
-    //       console.log(message);
-    //       throw new Error(res.errorMessage);
-    //     }
-    //     navigate("/");
-    //     window.location.reload();
-    //   })
-    //   .catch((e: any) => {
-    //     console.log(e);
-    //   });
+        // if (res.errorType) {
+        //   setMessage(res.errorMessage);
+        //   console.log(message);
+        //   throw new Error(res.errorMessage);
+        // }
+        // navigate("/");
+        // window.location.reload();
+      })
+      .catch((e: any) => {
+        console.log("catch -->", e);
+        setMessage("Invalid Credentials")
+      });
   };
 
   return (
@@ -98,7 +108,7 @@ const Login: React.FC<Props> = () => {
                           </InputGroup.Text>
                           <Field
                             name="username"
-                            type="text"
+                            type="email"
                             className="form-control"
                           />
                         </InputGroup>
