@@ -59,80 +59,80 @@ const BusinessAccount: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      // check if user is loaded
-      setUserLoaded(false);
+  // useEffect(() => {
+  //   (async () => {
+  //     // check if user is loaded
+  //     setUserLoaded(false);
 
-      // check for desktop size
-      if (window.innerWidth < 767) {
-        setIsMobile(true)
-      }
+  //     // check for desktop size
+  //     if (window.innerWidth < 767) {
+  //       setIsMobile(true)
+  //     }
 
-      // grab the user
-      let res = await fetchUser();
-      console.log(res);
+  //     // grab the user
+  //     let res = await fetchUser();
+  //     console.log(res);
 
-      // function to check window size
-      const windowUpdate = async () => {
-        if (window.innerWidth < 767) {
-          setIsMobile(true)
-        }
-        else {
-          setIsMobile(false);
-        }
-      }
-
-
-      window.addEventListener('resize', windowUpdate);
+  //     // function to check window size
+  //     const windowUpdate = async () => {
+  //       if (window.innerWidth < 767) {
+  //         setIsMobile(true)
+  //       }
+  //       else {
+  //         setIsMobile(false);
+  //       }
+  //     }
 
 
-      //
-      if (res.success) {
-        console.log(res.data.body);
-        let response = JSON.parse(res.data.body);
-        setUserHash(await sanitizeUserAttributes(response.UserAttributes))
-        // console.log(userHash);
+  //     window.addEventListener('resize', windowUpdate);
 
 
-        // check to see if user ever updated their hours
-        if (response.UserAttributes[9].Name === ("custom:business_hours")) {
-          setHours(getHours(response.UserAttributes[9].Value))
-        }
-        else if (response.UserAttributes[8].Name === ("custom:business_hours")) {
-          setHours(getHours(response.UserAttributes[8].Value))
-        }
-        else {
-          setHours(
-            {
-              'sun_open': 'Cl',
-              'sun_close': 'Cl',
-              'mon_open': 'Cl',
-              'mon_close': 'Cl',
-              'tue_open': 'Cl',
-              'tue_close': 'Cl',
-              'wed_open': 'Cl',
-              'wed_close': 'Cl',
-              'thu_open': 'Cl',
-              'thu_close': 'Cl',
-              'fri_open': 'Cl',
-              'fri_close': 'Cl',
-              'sat_open': 'Cl',
-              'sat_close': 'Cl',
-            })
-        }
+  //     //
+  //     if (res.success) {
+  //       console.log(res.data.body);
+  //       let response = JSON.parse(res.data.body);
+  //       setUserHash(await sanitizeUserAttributes(response.UserAttributes))
+  //       // console.log(userHash);
 
-        localStorage.setItem("userID", JSON.stringify(response.Username));
-        localStorage.setItem("business_name", JSON.stringify(response.UserAttributes[6].Value));
-        localStorage.setItem("business_address", JSON.stringify(response.UserAttributes[10].Value));
-        setUser(response.UserAttributes);
-        setUserLoaded(true);
 
-      }
+  //       // check to see if user ever updated their hours
+  //       if (response.UserAttributes[9].Name === ("custom:business_hours")) {
+  //         setHours(getHours(response.UserAttributes[9].Value))
+  //       }
+  //       else if (response.UserAttributes[8].Name === ("custom:business_hours")) {
+  //         setHours(getHours(response.UserAttributes[8].Value))
+  //       }
+  //       else {
+  //         setHours(
+  //           {
+  //             'sun_open': 'Cl',
+  //             'sun_close': 'Cl',
+  //             'mon_open': 'Cl',
+  //             'mon_close': 'Cl',
+  //             'tue_open': 'Cl',
+  //             'tue_close': 'Cl',
+  //             'wed_open': 'Cl',
+  //             'wed_close': 'Cl',
+  //             'thu_open': 'Cl',
+  //             'thu_close': 'Cl',
+  //             'fri_open': 'Cl',
+  //             'fri_close': 'Cl',
+  //             'sat_open': 'Cl',
+  //             'sat_close': 'Cl',
+  //           })
+  //       }
 
-      return () => window.removeEventListener('resize', windowUpdate);
-    })();
-  }, []);
+  //       localStorage.setItem("userID", JSON.stringify(response.Username));
+  //       localStorage.setItem("business_name", JSON.stringify(response.UserAttributes[6].Value));
+  //       localStorage.setItem("business_address", JSON.stringify(response.UserAttributes[10].Value));
+  //       setUser(response.UserAttributes);
+  //       setUserLoaded(true);
+
+  //     }
+
+  //     return () => window.removeEventListener('resize', windowUpdate);
+  //   })();
+  // }, []);
 
   const getHours = (hours: any) => {
     let newHours = JSON.parse(hours);
@@ -159,7 +159,7 @@ const BusinessAccount: React.FC = () => {
       <Sidebar />
       <div className="content">
         <NavBar />
-        {isMobile && userLoaded ? (
+        {isMobile && !userLoaded ? (
           <div>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
               <div className="d-block mb-4 mb-md-0">
@@ -249,7 +249,7 @@ const BusinessAccount: React.FC = () => {
               </Card>
             </div>
           </div>
-        ) : userLoaded && !isMobile ? (
+        ) : !userLoaded && !isMobile ? (
           <div>
             <div>
               <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">

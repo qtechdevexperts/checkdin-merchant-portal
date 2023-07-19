@@ -29,7 +29,8 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/paymentform" element={<Stripe />} />
         <Route path="/paymentcompletion" element={<PostStripe />} />
-        <Route path="/" element={<PrivateRoute><BusinessAccount /></PrivateRoute>} />
+        {/* <Route path="/" element={<PrivateRoute><BusinessAccount /></PrivateRoute>} /> */}
+        <Route path="/" element={<BusinessAccount />} />
         {/* <Route path="/couponmanager" element={<PrivateRoute><CouponManager /></PrivateRoute>} /> */}
         <Route path="/couponmanager" element={<CouponManager />} />
         {/* <Route path="/addcoupon" element={<PrivateRoute><AddCouponPage /></PrivateRoute>} /> */}
