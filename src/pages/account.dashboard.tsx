@@ -29,13 +29,42 @@ const BusinessAccount: React.FC = () => {
   const [userLoaded, setUserLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [userHash, setUserHash] = useState<Map<any, any>>()
+  const [merchantProfile, setMerchantProfile]: any = useState({
+    description: ''
+  })
+
+
+  const fetchProfile = async (id: any) => {
+    let res = await fetch(`https://api.chekdin.com/api/v1/merchant/get?id=${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMTc3MjIxLCJpYXQiOjE2OTAzMTMyMjEsImp0aSI6Ijk4ODZkMmExNGY1MjQyMDI4ODJhNmY5OWIyNjMwM2JiIiwidXNlcl9pZCI6MzZ9.a7CvedZbBka003D1XjYptNrQ5nYFQIXCfF-dGlzAWgM"
+      }
+    })
+    try {
+      if (res.ok) {
+        let response = await res.json();
+        console.log("res", response.data)
+        setMerchantProfile(response.data)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    let id = localStorage.getItem("merchantId")
+    console.log("id", id)
+
+    fetchProfile(id)
+  }, [])
 
 
 
   const fetchUser = async () => {
     let accessTkn = localStorage.getItem("accessToken") || "";
 
-    console.log(accessTkn);
+
 
     let requestBody = {
       method: "post",
@@ -43,7 +72,7 @@ const BusinessAccount: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        AccessToken: JSON.parse(accessTkn),
+
       }),
     };
 
@@ -180,9 +209,11 @@ const BusinessAccount: React.FC = () => {
               {/* Details */}
               <Card border="light" className="shadow-sm mb-4">
                 <Card.Body>
-                  <h3 className="mb-4">Business Description</h3>
+                  <h3 className="mb-4">Business Description 1</h3>
                   <p>
-                    {userHash?.get('custom:business_volume')}
+                    {/* {userHash?.get('custom:business_volume')} */}
+                    {/* {merchantProfile?.description ?? 'test'} */}
+                    hello
                   </p>
                 </Card.Body>
               </Card>
@@ -273,7 +304,8 @@ const BusinessAccount: React.FC = () => {
                     <Card.Body>
                       <h3 className="mb-4">Business Description</h3>
                       <p>
-                        {userHash?.get('custom:business_volume')}
+                        {/* {userHash?.get('custom:business_volume')} */}
+                        {merchantProfile.description}
                       </p>
                     </Card.Body>
                   </Card>
@@ -282,7 +314,8 @@ const BusinessAccount: React.FC = () => {
                   <Card border="light" className="shadow-sm">
                     <Card.Body>
                       <h3 className="mb-4">Contact</h3>
-                      <p>{userHash?.get('phone_number')}</p>
+                      {/* <p>{userHash?.get('phone_number')}</p> */}
+                      <p>{merchantProfile.contact_number}</p>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -327,7 +360,8 @@ const BusinessAccount: React.FC = () => {
                   <Card border="light" className="bg-white shadow-sm mb-4">
                     <Card.Body>
                       <h3 className="mb-4">Address</h3>
-                      <p>{userHash?.get('custom:business_address')}</p>
+                      {/* <p>{userHash?.get('custom:business_address')}</p> */}
+                      <p>{merchantProfile.address}</p>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -335,7 +369,8 @@ const BusinessAccount: React.FC = () => {
                   <Card border="light" className="bg-white shadow-sm mb-4">
                     <Card.Body>
                       <h3 className="mb-4">Business Site/Social Media</h3>
-                      <p>{userHash?.get('custom:business_website')}</p>
+                      {/* <p>{userHash?.get('custom:business_website')}</p> */}
+                      <p>{merchantProfile.website}</p>
                     </Card.Body>
                   </Card>
                 </Col>

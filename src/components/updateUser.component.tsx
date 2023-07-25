@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage} from "formik";
-import { Row, Col, Form as FormBS, InputGroup, Button, Card, Image} from "@themesberg/react-bootstrap";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Row, Col, Form as FormBS, InputGroup, Button, Card, Image } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
@@ -13,7 +13,7 @@ import UpdateHours from "./updateHours.component";
 import ProfilePictureUploader from "./profilePictureUploader.component";
 
 const UpdatedUser: React.FC = () => {
-  
+
   // State Variables 
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
@@ -34,47 +34,47 @@ const UpdatedUser: React.FC = () => {
     phone_number: "",
   };
 
-  var scheduleData = 
+  var scheduleData =
   {
     Monday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     },
     Tuesday:
     {
       Open: "",
-      Close: "" 
-    },    
+      Close: ""
+    },
     Wednesday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     },
     Thursday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     },
     Friday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     },
     Saturday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     },
     Sunday:
     {
       Open: "",
-      Close: "" 
+      Close: ""
     }
   }
 
   const fileTypes = ["JPG", "PNG", "GIF"];
-  
+
 
   // Validation and Upload Functions
   const validationSchema = Yup.object().shape({
@@ -84,24 +84,37 @@ const UpdatedUser: React.FC = () => {
     business_website: Yup.string().max(256, "Max 256 characters"),
     business_address: Yup.string(),
     phone_number: Yup.string()
-      .phone("US", true, "Please enter a valid phone number.")
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .max(10, "Only ten digits are allowed")
+    // .phone("US", true, "Please enter a valid phone number.")
+    // .matches(/^[0-9]+$/, "Must be only digits")
+    // .max(10, "Only ten digits are allowed")
   });
 
   // Function
   const updateUser = async (formValue: any) => {
+    console.log("i am running")
     const accessTkn = localStorage.getItem("accessToken") || "";
 
+    let body = {
+      name: formValue.business_name,
+      contact_number: formValue.phone_number,
+      description: formValue.business_volume,
+      address: formValue.business_address,
+      website: formValue.business_website,
+      latitude: 2.222,
+      longitude: 1.222
+    }
+
     let requestBody = {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMTc3MjIxLCJpYXQiOjE2OTAzMTMyMjEsImp0aSI6Ijk4ODZkMmExNGY1MjQyMDI4ODJhNmY5OWIyNjMwM2JiIiwidXNlcl9pZCI6MzZ9.a7CvedZbBka003D1XjYptNrQ5nYFQIXCfF-dGlzAWgM"
       },
-      body: JSON.stringify({
-        accessToken: JSON.parse(accessTkn),
-        attributes: formValue,
-      }),
+      // body: JSON.stringify({
+      //   // accessToken: JSON.parse(accessTkn),
+      //   attributes: formValue,
+      // }),
+      body: JSON.stringify(body),
     };
 
     try {
@@ -110,14 +123,14 @@ const UpdatedUser: React.FC = () => {
 
       console.log(response);
 
-      console.log(JSON.parse(json.body));
+      // console.log(JSON.parse(json.body));
       setSuccessful(true);
       setMessage("Thank you for submitting.");
       return { success: true };
     } catch (e) {
       console.log(e);
       setSuccessful(false);
-      setMessage("Error");
+      // setMessage("Error");
       return { success: false };
     }
   };
@@ -140,7 +153,7 @@ const UpdatedUser: React.FC = () => {
       <Card>
         <Card.Body>
           <h5 className="mb-4">Update Profile Picture</h5>
-          <ProfilePictureUploader/>
+          <ProfilePictureUploader />
         </Card.Body>
       </Card>
 

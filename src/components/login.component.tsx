@@ -49,9 +49,11 @@ const Login: React.FC<Props> = () => {
     auth_login(username, password)
       .then((res: any) => {
         setLoading(false);
-        console.log("res==>", res.data.data.access_token);
-        if (res?.data?.data?.access_token) {
+        console.log("res==>", res.data.data.data.access_token);
+        if (res?.data?.data?.data?.access_token) {
           // setMessage("login Success")
+          setMessage("");
+          localStorage.setItem("merchantId", JSON.stringify(res.data.data.data.profile.merchant))
           navigate("/couponmanager");
         }
         else {

@@ -2,10 +2,11 @@
 
 export const AUTH_SIGNUP_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signup"
 // export const AUTH_SIGNIN_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signin"
-export const AUTH_SIGNIN_URL = "https://api.chekdin.com/api/v1/auth/login"
+export const AUTH_SIGNIN_URL = "https://api.chekdin.com/api/v1/auth/merchant-login"
 export const AUTH_SIGNUP_CONFIRMATION_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signupconfirmation"
 export const AUTH_GET_USER_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/getuser"
-export const AUTH_UPDATE_USER_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/updateuser";
+// export const AUTH_UPDATE_USER_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/updateuser";
+export const AUTH_UPDATE_USER_URL = "https://api.chekdin.com/api/v1/merchant/update";
 export const AUTH_UPDATE_USER_HOURS = "https://wrjl182nhl.execute-api.us-east-1.amazonaws.com/Alpha/updatehours";
 export const GET_ITEMS_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/getcoupon"
 // export const ADD_ITEM_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/postcoupon"
