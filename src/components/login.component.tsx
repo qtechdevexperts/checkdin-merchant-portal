@@ -160,7 +160,7 @@ const Login: React.FC<Props> = () => {
                   </Form>
                 </Formik>
 
-                {/* <div className="d-flex justify-content-center align-items-center mt-4">
+                <div className="d-flex justify-content-center align-items-center mt-4">
                   <span className="fw-normal">
                     Not registered?
                     <Card.Link
@@ -171,7 +171,7 @@ const Login: React.FC<Props> = () => {
                       {` Create an account `}
                     </Card.Link>
                   </span>
-                </div> */}
+                </div>
                 <div className="d-flex justify-content-center align-items-center mt-2">
                   <span className="fw-normal">
                     Forgot Password?

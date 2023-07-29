@@ -1,6 +1,7 @@
 // Authentication Constants
 
-export const AUTH_SIGNUP_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signup"
+// export const AUTH_SIGNUP_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signup"
+export const AUTH_SIGNUP_URL = "https://api.chekdin.com/api/v1/auth/merchant-signup"
 // export const AUTH_SIGNIN_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signin"
 export const AUTH_SIGNIN_URL = "https://api.chekdin.com/api/v1/auth/merchant-login"
 export const AUTH_SIGNUP_CONFIRMATION_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/signupconfirmation"
@@ -11,7 +12,8 @@ export const AUTH_UPDATE_USER_HOURS = "https://wrjl182nhl.execute-api.us-east-1.
 export const GET_ITEMS_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/getcoupon"
 // export const ADD_ITEM_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/postcoupon"
 export const ADD_ITEM_COUPON_MANAGER_URL = "https://api.chekdin.com/api/v1/coupon/add-update"
-export const DELETE_ITEM_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/deletecoupon";
+// export const DELETE_ITEM_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/deletecoupon";
+export const DELETE_ITEM_COUPON_MANAGER_URL = "https://api.chekdin.com/api/v1/coupon/add-update";
 export const STRIPE_CONFIG_URL = "https://o1vzllh1q7.execute-api.us-east-1.amazonaws.com/LIVE/stripe_config";
 export const STRIPE_SETUP_URL = "https://o1vzllh1q7.execute-api.us-east-1.amazonaws.com/LIVE/stripe_setup";
 export const STRIPE_UPDATE_CUSTOMER_URL = "https://o1vzllh1q7.execute-api.us-east-1.amazonaws.com/LIVE/stripe_update_customer";

@@ -144,19 +144,17 @@ const CouponManagerTable: React.FC = () => {
     }
   };
 
-  const deleteItem = async (UID: string) => {
+  const deleteItem = async (UID: string | number) => {
     let requestBody = {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        UID: UID,
-      }),
+
     };
 
     try {
-      let response = await fetch(DELETE_ITEM_COUPON_MANAGER_URL, requestBody);
+      let response = await fetch(`${DELETE_ITEM_COUPON_MANAGER_URL}?id=${UID}`, requestBody);
       console.log(response);
 
       setIsDeleted(true);
@@ -284,33 +282,11 @@ const CouponManagerTable: React.FC = () => {
                               </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                              {item.isActive ? (
-                                <Dropdown.Item
-                                  as={Button}
-                                  className="text-primary"
-                                  disabled
-                                >
-                                  Activated
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  as={Button}
-                                  className="text-primary"
-                                  onClick={() => {
-                                    activateItem(item.UID, item.coupon_type);
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPowerOff}
-                                    className="me-2"
-                                  />
-                                  Activate
-                                </Dropdown.Item>
-                              )}
+
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  deleteItem(item.UID);
+                                  deleteItem(item.id);
                                   if (item.isActive) {
                                     setQRValue("Activate Coupon");
                                   }
@@ -418,33 +394,11 @@ const CouponManagerTable: React.FC = () => {
                               </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                              {item.isActive ? (
-                                <Dropdown.Item
-                                  as={Button}
-                                  className="text-primary"
-                                  disabled
-                                >
-                                  Activated
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  as={Button}
-                                  className="text-primary"
-                                  onClick={() => {
-                                    activateItem(item.UID, item.coupon_type);
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPowerOff}
-                                    className="me-2"
-                                  />
-                                  Activate
-                                </Dropdown.Item>
-                              )}
+
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  deleteItem(item.UID);
+                                  deleteItem(item.id);
                                   if (item.isActive) {
                                     setQRValue("Activate Coupon");
                                   }

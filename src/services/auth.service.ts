@@ -23,14 +23,14 @@ export const auth_register = async (
   let body = {
     email,
     password,
-    phone_number,
-    business_name,
-    business_address,
-    business_website,
-    business_volume,
-    business_twitter,
-    business_facebook,
-    business_instagram,
+    contact_number: phone_number,
+    name: business_name,
+    address: business_address,
+    // business_website,
+    description: business_volume,
+    // business_twitter,
+    // business_facebook,
+    // business_instagram,
   };
   let axiosConfig = {
     headers: {

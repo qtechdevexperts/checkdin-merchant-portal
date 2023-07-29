@@ -27,6 +27,7 @@ import "yup-phone";
 import { RoutePath } from "../router/routes";
 import IUser from "../types/user.type";
 import BgImage from "../assets/signin.svg";
+import { auth_register } from "../services/auth.service";
 
 const Register: React.FC = () => {
   let navigate: NavigateFunction = useNavigate();
@@ -61,11 +62,11 @@ const Register: React.FC = () => {
     confirmPassword: Yup.string()
       .required("Please retype your password.")
       .oneOf([Yup.ref("password")], "Your passwords do not match."),
-    phoneNumber: Yup.string()
-      .phone("US", true, "Please enter a valid phone number.")
-      .required("This field is required.")
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .max(10, "Only ten digits are allowed"),
+    phoneNumber: Yup.string(),
+    // .phone("US", true, "Please enter a valid phone number.")
+    // .required("This field is required.")
+    // .matches(/^[0-9]+$/, "Must be only digits")
+    // .max(10, "Only ten digits are allowed"),
     businessWebsite: Yup.string().required("This field is required."),
     businessName: Yup.string()
       .max(256, "Max 256 characters")
@@ -88,7 +89,7 @@ const Register: React.FC = () => {
     }
   };
 
-  const handleRegister = (formValue: IUser) => {
+  const handleRegister = async (formValue: IUser) => {
     const {
       email,
       password,
@@ -125,10 +126,31 @@ const Register: React.FC = () => {
     localStorage.setItem("business_website", business_website);
     localStorage.setItem("phone_number", phone_number);
 
-    setTimeout(() => {
-      navigate("/paymentform");
-    }, 1500);
+    // setTimeout(() => {
+    //   // navigate("/paymentform");
+
+    // }, 1500);
+
+    await auth_register(
+      email,
+      password,
+      phone_number,
+      business_name,
+      business_address,
+      business_website,
+      business_volume,
+      business_facebook,
+      business_twitter,
+      business_instagram
+    ).then((res) => {
+      console.log("signup res ==>", res);
+      setMessage("merchant created successfully! needs apporoval")
+    })
+
   };
+
+
+
 
   return (
     <main>
