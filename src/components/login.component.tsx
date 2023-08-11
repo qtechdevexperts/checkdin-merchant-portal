@@ -50,6 +50,7 @@ const Login: React.FC<Props> = () => {
       .then((res: any) => {
         setLoading(false);
         console.log("res==>", res.data.data.data.access_token);
+        console.log("res==>", res.data.data.data.access_token);
         if (res?.data?.data?.data?.access_token) {
           // setMessage("login Success")
           setMessage("");

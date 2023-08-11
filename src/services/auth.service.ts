@@ -53,37 +53,35 @@ export const auth_login = async (username: string, password: string) => {
 
   const response = await axios.post(AUTH_SIGNIN_URL, body, axiosConfig);
   // console.log("res -->", response);
-  return response;
+  // return response;
 
-  // if (response.data.errorMessage) {
-  //   const parsedError = JSON.stringify(response.data);
-  //   console.log(parsedError);
-  //   return parsedError;
-  // } else {
-  //   const parsedRes = await JSON.parse(response.data.body);
-  //   console.log(`response ${response.data.body}`);
 
-  //   const accessToken = JSON.stringify(
-  //     parsedRes.AuthenticationResult.AccessToken
-  //   );
-  //   const refreshToken = JSON.stringify(
-  //     parsedRes.AuthenticationResult.RefreshToken
-  //   );
-  //   const idToken = JSON.stringify(parsedRes.AuthenticationResult.IdToken);
-  //   const tokenType = JSON.stringify(parsedRes.AuthenticationResult.TokenType);
+    // console.log("data",response.data.data.data)
+    // const parsedRes = await JSON.parse(response.data.data.data);
+    // console.log(`response ${response.data.data}`);
+    // console.log('parsedData',parsedRes)
+    const accessToken = JSON.stringify(
+      response.data.data.data.access_token
+    );
+    // const refreshToken = JSON.stringify(
+    //   parsedRes.access_token
+    // );
+    // const idToken = JSON.stringify(parsedRes.access_token);
+    // const tokenType = JSON.stringify(parsedRes.AuthenticationResult.TokenType);
 
-  //   // assign params from access token
-  //   const params = {
-  //     AccessToken: accessToken,
-  //   };
+    // assign params from access token
+    // const params = {
+    //   AccessToken: accessToken,
+    // };
 
-  //   localStorage.setItem("accessToken", accessToken);
-  //   localStorage.setItem("refreshToken", refreshToken);
-  //   localStorage.setItem("idToken", idToken);
-  //   localStorage.setItem("tokenType", tokenType);
+    localStorage.setItem("accessToken", accessToken);
+    // localStorage.setItem("refreshToken", refreshToken);
+    // localStorage.setItem("idToken", idToken);
+    // localStorage.setItem("tokenType", tokenType);
 
-  //   return parsedRes;
-  // }
+    // console.log('parsed',parsedRes)
+    return response;
+  
 };
 
 export const auth_signup_conf = async (code: string, username: string) => {
