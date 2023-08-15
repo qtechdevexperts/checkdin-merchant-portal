@@ -215,6 +215,7 @@ const AddCoupon: React.FC = () => {
                         name="redeem_code"
                         type="text"
                         className="form-control"
+                        placeholder="6-digit code"
                       />
                     </InputGroup>
                     <ErrorMessage
