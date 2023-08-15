@@ -52,6 +52,7 @@ const AddCoupon: React.FC = () => {
     coupon_type: Yup.string().required("This field is required."),
     redeem_code: Yup.string().required("This is field is required"),
   });
+  let accessTkn = localStorage.getItem("accessToken") || "";
 
   const handleSubmit = async (formValue: RegisterValues) => {
     const {
@@ -70,7 +71,7 @@ const AddCoupon: React.FC = () => {
 
     const UUID = await uuidv4();
     let id = localStorage.getItem("merchantId")
-    let accessTkn = localStorage.getItem("accessToken");
+
 
     let requestBody = {
       method: "POST",
