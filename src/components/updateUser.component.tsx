@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Row, Col, Form as FormBS, InputGroup, Button, Card, Image } from "@themesberg/react-bootstrap";
@@ -17,21 +17,62 @@ const UpdatedUser: React.FC = () => {
   // State Variables 
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
+  const [merchantProfile, setMerchantProfile] = useState({
+    name: "",
+    description: "",
+    website: "",
+    address: "",
+    contact_number: "",
+  })
   const inputRef = useRef(null)
+  const formikRef: any = useRef(null);
+  useEffect(() => {
+    let accessTkn = localStorage.getItem("accessToken");
+    let id = localStorage.getItem("merchantId")
+    console.log("id", id)
+    fetchProfile(id, accessTkn)
+  }, [])
+
+  const fetchProfile = async (id: any, accessTkn: any) => {
+
+    let res = await fetch(`https://api.chekdin.com/api/v1/merchant/get?id=${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${JSON.parse(accessTkn)}`
+      }
+    })
+    try {
+      if (res.ok) {
+        let response = await res.json();
+        console.log("res", response.data)
+        setMerchantProfile(response.data)
+        formikRef.current.setValues({
+          business_name: response.data.name,
+          business_volume: response.data.description,
+          business_website: response.data.website,
+          business_address: response.data.address,
+          phone_number: response.data.contact_number,
+        });
+
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // configurations
-  const initialValues: {
+  let initialValues: {
     business_name: string;
     business_volume: string;
     business_website: string;
     business_address: string;
     phone_number: string;
   } = {
-    business_name: "",
-    business_volume: "",
-    business_website: "",
-    business_address: "",
-    phone_number: "",
+    business_name: merchantProfile.name,
+    business_volume: merchantProfile.description,
+    business_website: merchantProfile.website,
+    business_address: merchantProfile.address,
+    phone_number: merchantProfile.contact_number,
   };
 
   var scheduleData =
@@ -164,9 +205,11 @@ const UpdatedUser: React.FC = () => {
           <h5 className="mb-4">Edit Profile</h5>
           <p>Update your company profile</p>
           <Formik
+            enableReinitialize
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={updateUser}
+            innerRef={formikRef}
           >
             <Form>
               <Row>
