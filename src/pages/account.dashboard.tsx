@@ -34,11 +34,12 @@ const BusinessAccount: React.FC = () => {
   })
 
 
-  const fetchProfile = async (id: any) => {
+  const fetchProfile = async (id: any, accessTkn: any) => {
+
     let res = await fetch(`https://api.chekdin.com/api/v1/merchant/get?id=${id}`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMTc3MjIxLCJpYXQiOjE2OTAzMTMyMjEsImp0aSI6Ijk4ODZkMmExNGY1MjQyMDI4ODJhNmY5OWIyNjMwM2JiIiwidXNlcl9pZCI6MzZ9.a7CvedZbBka003D1XjYptNrQ5nYFQIXCfF-dGlzAWgM"
+        'Authorization': `Bearer ${JSON.parse(accessTkn)}`
       }
     })
     try {
@@ -52,12 +53,12 @@ const BusinessAccount: React.FC = () => {
     }
   }
 
+  let accessTkn = localStorage.getItem("accessToken");
   useEffect(() => {
     let id = localStorage.getItem("merchantId")
     console.log("id", id)
-
-    fetchProfile(id)
-  }, [])
+    fetchProfile(id, accessTkn)
+  }, [accessTkn])
 
 
 

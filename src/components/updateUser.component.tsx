@@ -93,8 +93,10 @@ const UpdatedUser: React.FC = () => {
   const updateUser = async (formValue: any) => {
     console.log("i am running")
     const accessTkn = localStorage.getItem("accessToken") || "";
+    let id = localStorage.getItem("merchantId")
 
     let body = {
+      id: id,
       name: formValue.business_name,
       contact_number: formValue.phone_number,
       description: formValue.business_volume,
@@ -108,7 +110,7 @@ const UpdatedUser: React.FC = () => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMTc3MjIxLCJpYXQiOjE2OTAzMTMyMjEsImp0aSI6Ijk4ODZkMmExNGY1MjQyMDI4ODJhNmY5OWIyNjMwM2JiIiwidXNlcl9pZCI6MzZ9.a7CvedZbBka003D1XjYptNrQ5nYFQIXCfF-dGlzAWgM"
+        "Authorization": `Bearer ${JSON.parse(accessTkn)}`
       },
       // body: JSON.stringify({
       //   // accessToken: JSON.parse(accessTkn),
