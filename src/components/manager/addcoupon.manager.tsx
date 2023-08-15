@@ -69,6 +69,7 @@ const AddCoupon: React.FC = () => {
     let business_name = localStorage.getItem("business_name") || "";
 
     const UUID = await uuidv4();
+    let id = localStorage.getItem("merchantId")
 
     let requestBody = {
       method: "POST",
@@ -89,7 +90,7 @@ const AddCoupon: React.FC = () => {
         business_address: business_address,
         name: 'Buy one get one',
         offer_description: 'test',
-        merchant: 1
+        merchant: JSON.parse(id)
       }),
     };
 
