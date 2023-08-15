@@ -33,7 +33,12 @@ const CouponManagerTable: React.FC = () => {
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
   const fetchCoupens = async () => {
-    const res = await fetch("https://api.chekdin.com/api/v1/coupon/list")
+    let accessTkn = localStorage.getItem("accessToken");
+    const res = await fetch("https://api.chekdin.com/api/v1/coupon/list", {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessTkn)}`
+      }
+    })
     let response = await res.json();
     try {
       if (res.ok && response) {

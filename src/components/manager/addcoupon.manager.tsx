@@ -70,11 +70,13 @@ const AddCoupon: React.FC = () => {
 
     const UUID = await uuidv4();
     let id = localStorage.getItem("merchantId")
+    let accessTkn = localStorage.getItem("accessToken");
 
     let requestBody = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${JSON.parse(accessTkn)}`
       },
       body: JSON.stringify({
         // UID: UUID,
