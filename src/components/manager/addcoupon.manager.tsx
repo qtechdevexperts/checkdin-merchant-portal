@@ -95,7 +95,7 @@ const AddCoupon: React.FC = () => {
         business_address: business_address,
         name: 'Buy one get one',
         offer_description: 'test',
-        merchant: JSON.parse(id)
+        merchant: id
       }),
     };
 
@@ -106,6 +106,7 @@ const AddCoupon: React.FC = () => {
       setMessage("Coupon added.");
       setSuccessful(true);
     } catch (error) {
+      console.log("merchant id", id)
       console.log(error);
       setMessage("Something went wrong");
       setSuccessful(false);
