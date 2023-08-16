@@ -71,6 +71,7 @@ const AddCoupon: React.FC = () => {
 
     const UUID = await uuidv4();
     let id = localStorage.getItem("merchantId")
+    console.log("merchant-id", id);
 
 
     let requestBody = {
