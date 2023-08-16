@@ -53,6 +53,7 @@ const AddCoupon: React.FC = () => {
     redeem_code: Yup.string().required("This is field is required"),
   });
   let accessTkn = localStorage.getItem("accessToken") || "";
+  let id = localStorage.getItem("merchantId")
 
   const handleSubmit = async (formValue: RegisterValues) => {
     const {
@@ -70,7 +71,7 @@ const AddCoupon: React.FC = () => {
     let business_name = localStorage.getItem("business_name") || "";
 
     const UUID = await uuidv4();
-    let id = localStorage.getItem("merchantId")
+
     console.log("merchant-id", id);
 
 
