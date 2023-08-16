@@ -34,7 +34,7 @@ const CouponManagerTable: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const fetchCoupens = async () => {
     let accessTkn = localStorage.getItem("accessToken") || "";
-    const res = await fetch("https://api.chekdin.com/api/v1/coupon/list", {
+    const res = await fetch("https://api.chekdin.com/api/v1/coupon/my-coupons", {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessTkn)}`
       }
