@@ -51,8 +51,15 @@ const CouponManagerTable: React.FC = () => {
       console.log("error fetching coupens", err)
     }
   }
+  let todayDate: Date | string;
   useEffect(() => {
     fetchCoupens();
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+
+    todayDate = `${year}-${month}-${day}`;
   }, [])
 
 
@@ -244,7 +251,7 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount ?? 0 + "%" + " Off";
                     }
 
-                    if (item.isActive) {
+                    if (new Date(item.expiry_date) > new Date()) {
                       status = "Active";
                     } else {
                       status = "Inactive";
@@ -356,7 +363,7 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount + "%" + " Off";
                     }
 
-                    if (item.isActive) {
+                    if (new Date(item.expiry_date) > new Date()) {
                       status = "Active";
                     } else {
                       status = "Inactive";
