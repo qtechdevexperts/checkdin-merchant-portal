@@ -38,7 +38,6 @@ const Register: React.FC = () => {
 
   const initialValues: IUser = {
     email: "",
-    password: "",
     phoneNumber: "",
     businessName: "",
     businessWebsite: "",
@@ -53,15 +52,6 @@ const Register: React.FC = () => {
     email: Yup.string()
       .email("This is not a valid email.")
       .required("This field is required."),
-    password: Yup.string()
-      .required("This field is required.")
-      .min(8, "Password requires more than 8 characters")
-      .matches(/^(?=.*[!@#\$%\^&\*])/, "Password requires a special character")
-      .matches(/^(?=.*[A-Z])/, "Password requires an uppercase letter")
-      .matches(/^(?=.*[0-9])/, "Password requires a number"),
-    confirmPassword: Yup.string()
-      .required("Please retype your password.")
-      .oneOf([Yup.ref("password")], "Your passwords do not match."),
     phoneNumber: Yup.string(),
     // .phone("US", true, "Please enter a valid phone number.")
     // .required("This field is required.")
@@ -92,7 +82,6 @@ const Register: React.FC = () => {
   const handleRegister = async (formValue: IUser) => {
     const {
       email,
-      password,
       phoneNumber,
       businessName,
       businessAddress,
@@ -116,7 +105,6 @@ const Register: React.FC = () => {
     const phone_number = "+1" + phoneNumber;
 
     localStorage.setItem("registerUsername", email);
-    localStorage.setItem("registerPassword", password);
     localStorage.setItem("business_name", business_name);
     localStorage.setItem("business_address", business_address);
     localStorage.setItem("business_volume", business_volume);
@@ -133,7 +121,6 @@ const Register: React.FC = () => {
 
     await auth_register(
       email,
-      password,
       phone_number,
       business_name,
       business_address,
@@ -274,42 +261,7 @@ const Register: React.FC = () => {
                             className="alert alert-danger"
                           />
                         </FormBS.Group>
-                        <FormBS.Group id="password" className="mb-4">
-                          <FormBS.Label>Your Password</FormBS.Label>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              <FontAwesomeIcon icon={faUnlockAlt} />
-                            </InputGroup.Text>
-                            <Field
-                              name="password"
-                              type="password"
-                              className="form-control"
-                            />
-                          </InputGroup>
-                          <ErrorMessage
-                            name="password"
-                            component="div"
-                            className="alert alert-danger"
-                          />
-                        </FormBS.Group>
-                        <FormBS.Group id="confirmPassword" className="mb-4">
-                          <FormBS.Label>Confirm Password</FormBS.Label>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              <FontAwesomeIcon icon={faUnlockAlt} />
-                            </InputGroup.Text>
-                            <Field
-                              name="confirmPassword"
-                              type="password"
-                              className="form-control"
-                            />
-                          </InputGroup>
-                          <ErrorMessage
-                            name="confirmPassword"
-                            component="div"
-                            className="alert alert-danger"
-                          />
-                        </FormBS.Group>
+
                         <FormCheck type="checkbox" className="d-flex mb-4">
                           <FormCheck.Input
                             required

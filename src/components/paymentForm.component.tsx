@@ -123,7 +123,6 @@ const PaymentForm: React.FC = () => {
 
         await auth_register(
           email,
-          password,
           phone_number,
           business_name,
           business_address,

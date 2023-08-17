@@ -9,7 +9,6 @@ import {
 
 export const auth_register = async (
   email: string,
-  password: string,
   phone_number: string,
   business_name: string,
   business_address: string,
@@ -22,7 +21,6 @@ export const auth_register = async (
   console.log("auth_reg: " + AUTH_SIGNUP_URL);
   let body = {
     email,
-    password,
     contact_number: phone_number,
     name: business_name,
     address: business_address,

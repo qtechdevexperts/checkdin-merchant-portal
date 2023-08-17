@@ -57,7 +57,6 @@ const PaymentSetup: React.FC = () => {
 
     try {
       const email = localStorage.getItem("registerUsername") || "";
-      const password = localStorage.getItem("registerPassword") || "";
       const business_name = localStorage.getItem("business_name") || "";
       const business_address = localStorage.getItem("business_address") || "";
       const business_volume = localStorage.getItem("business_volume") || "";
@@ -69,7 +68,6 @@ const PaymentSetup: React.FC = () => {
       const phone_number = localStorage.getItem("phone_number") || "";
       const customer_id = localStorage.getItem("customer_id") || "";
 
-      console.log(password);
 
       let requestBody = {
         method: "POST",
@@ -98,7 +96,6 @@ const PaymentSetup: React.FC = () => {
 
       await auth_register(
         email,
-        password,
         phone_number,
         business_name,
         business_address,
@@ -254,15 +251,15 @@ const PaymentSetup: React.FC = () => {
                       </FormBS.Group>
                       <FormBS.Group id="sub_type" className="mb-4">
                         <FormBS.Label>Subscription</FormBS.Label>
-                          <Field
-                            as={FormBS.Select}
-                            name="sub_type"
-                            type="text"
-                            className="form-control"
-                          >
-                            <option value={STRIPE_MS_PRICE_ID}>6-Month Subscription - $299.99</option>
-                            <option value={STRIPE_BASIC_PRICE_ID}>Monthly Subscription - $59.99</option>
-                          </Field>
+                        <Field
+                          as={FormBS.Select}
+                          name="sub_type"
+                          type="text"
+                          className="form-control"
+                        >
+                          <option value={STRIPE_MS_PRICE_ID}>6-Month Subscription - $299.99</option>
+                          <option value={STRIPE_BASIC_PRICE_ID}>Monthly Subscription - $59.99</option>
+                        </Field>
                         <ErrorMessage
                           name="sub_type"
                           component="div"
