@@ -267,7 +267,7 @@ const CouponManagerTable: React.FC = () => {
                           <span className="fw-normal">{item.start_date}</span>
                         </td>
                         <td>
-                          <span className="fw-normal">{item.end_date}</span>
+                          <span className="fw-normal">{item.expiry_date}</span>
                         </td>
                         <td>
                           <span className="fw-normal">{status}</span>
