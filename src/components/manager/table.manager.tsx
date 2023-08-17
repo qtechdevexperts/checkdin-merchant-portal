@@ -312,6 +312,19 @@ const CouponManagerTable: React.FC = () => {
                                 />
                                 Remove
                               </Dropdown.Item>
+                              <Dropdown.Item
+                                as={Button}
+                                onClick={() => {
+                                  setQRValue(item.coupon_code);
+                                }}
+                                className="text-primary"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className="me-2"
+                                />
+                                Generate QR
+                              </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
                         </td>
@@ -423,6 +436,19 @@ const CouponManagerTable: React.FC = () => {
                                   className="me-2"
                                 />
                                 Remove
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                as={Button}
+                                onClick={() => {
+                                  setQRValue(item.coupon_code);
+                                }}
+                                className="text-primary"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className="me-2"
+                                />
+                                Generate QR
                               </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
