@@ -315,7 +315,7 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(item.coupon_code);
+                                  setQRValue(item.id + '_coupon');
                                 }}
                                 className="text-primary"
                               >
@@ -440,7 +440,7 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(item.coupon_code);
+                                  setQRValue(item.id + '_coupon');
                                 }}
                                 className="text-primary"
                               >
