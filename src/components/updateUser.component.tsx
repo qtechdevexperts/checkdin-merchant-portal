@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Row, Col, Form as FormBS, InputGroup, Button, Card, Image } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +26,7 @@ const UpdatedUser: React.FC = () => {
   })
   const inputRef = useRef(null)
   const formikRef: any = useRef(null);
+  let navigate: NavigateFunction = useNavigate();
   useEffect(() => {
     let accessTkn = localStorage.getItem("accessToken");
     let id = localStorage.getItem("merchantId")
@@ -132,7 +133,6 @@ const UpdatedUser: React.FC = () => {
 
   // Function
   const updateUser = async (formValue: any) => {
-    console.log("i am running")
     const accessTkn = localStorage.getItem("accessToken") || "";
     let id = localStorage.getItem("merchantId")
 
@@ -169,6 +169,7 @@ const UpdatedUser: React.FC = () => {
       // console.log(JSON.parse(json.body));
       setSuccessful(true);
       setMessage("Thank you for submitting.");
+      navigate("/")
       return { success: true };
     } catch (e) {
       console.log(e);
@@ -203,7 +204,7 @@ const UpdatedUser: React.FC = () => {
       <Card className="mt-4">
         <Card.Body>
           <h5 className="mb-4">Edit Profile</h5>
-          <p>Update your company profile</p>
+          <p>Update your business profile</p>
           <Formik
             enableReinitialize
             initialValues={initialValues}
