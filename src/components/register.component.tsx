@@ -40,7 +40,6 @@ const Register: React.FC = () => {
     email: "",
     phoneNumber: "",
     businessName: "",
-    businessWebsite: "",
     businessAddress: "",
     businessVolume: "",
     businessFacebook: "",
@@ -57,7 +56,6 @@ const Register: React.FC = () => {
     // .required("This field is required.")
     // .matches(/^[0-9]+$/, "Must be only digits")
     // .max(10, "Only ten digits are allowed"),
-    businessWebsite: Yup.string().required("This field is required."),
     businessName: Yup.string()
       .max(256, "Max 256 characters")
       .required("This field is required"),
@@ -85,7 +83,6 @@ const Register: React.FC = () => {
       phoneNumber,
       businessName,
       businessAddress,
-      businessWebsite,
       businessVolume,
       businessFacebook,
       businessInstagram,
@@ -100,7 +97,6 @@ const Register: React.FC = () => {
     const business_facebook = businessFacebook ? businessFacebook : "None";
     const business_twitter = businessTwitter ? businessTwitter : "None";
     const business_instagram = businessInstagram ? businessInstagram : "None";
-    const business_website = businessWebsite ? businessWebsite : "None";
 
     const phone_number = "+1" + phoneNumber;
 
@@ -111,7 +107,6 @@ const Register: React.FC = () => {
     localStorage.setItem("business_facebook", business_facebook);
     localStorage.setItem("business_twitter", business_twitter);
     localStorage.setItem("business_instagram", business_instagram);
-    localStorage.setItem("business_website", business_website);
     localStorage.setItem("phone_number", phone_number);
 
     // setTimeout(() => {
@@ -124,7 +119,6 @@ const Register: React.FC = () => {
       phone_number,
       business_name,
       business_address,
-      business_website,
       business_volume,
       business_facebook,
       business_twitter,
@@ -223,24 +217,7 @@ const Register: React.FC = () => {
                             className="alert alert-danger"
                           />
                         </FormBS.Group>
-                        <FormBS.Group id="businessWebsite" className="mb-4">
-                          <FormBS.Label>Website</FormBS.Label>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              <FontAwesomeIcon icon={faBuilding} />
-                            </InputGroup.Text>
-                            <Field
-                              name="businessWebsite"
-                              type="text"
-                              className="form-control"
-                            />
-                          </InputGroup>
-                          <ErrorMessage
-                            name="businessWebsite"
-                            component="div"
-                            className="alert alert-danger"
-                          />
-                        </FormBS.Group>
+
                         <FormBS.Group id="email" className="mb-4">
                           <FormBS.Label>
                             Your Email (which will also be your username)

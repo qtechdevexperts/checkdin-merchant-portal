@@ -12,7 +12,6 @@ export const auth_register = async (
   phone_number: string,
   business_name: string,
   business_address: string,
-  business_website: string,
   business_volume: string,
   business_twitter: string,
   business_facebook: string,

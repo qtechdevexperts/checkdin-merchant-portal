@@ -126,7 +126,6 @@ const PaymentForm: React.FC = () => {
           phone_number,
           business_name,
           business_address,
-          business_website,
           business_volume,
           business_facebook,
           business_twitter,
