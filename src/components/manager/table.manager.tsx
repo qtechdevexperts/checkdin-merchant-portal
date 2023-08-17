@@ -164,6 +164,7 @@ const CouponManagerTable: React.FC = () => {
 
       setIsDeleted(true);
       let res = await fetchTable();
+      fetchCoupens()
       if (res.success) {
         setTable(res.data);
         setTableLoaded(true);
