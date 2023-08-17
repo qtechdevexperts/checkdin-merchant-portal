@@ -207,7 +207,7 @@ const Register: React.FC = () => {
                             </InputGroup.Text>
                             <Field
                               name="phoneNumber"
-                              type="text"
+                              type="number"
                               className="form-control"
                             />
                           </InputGroup>
