@@ -9,7 +9,7 @@ import {
 } from "@themesberg/react-bootstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import {
   faCalendarAlt,
   faDollarSign,
@@ -27,6 +27,7 @@ import { ADD_ITEM_COUPON_MANAGER_URL } from "../../constants";
 const AddCoupon: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
+  let navigate: NavigateFunction = useNavigate();
 
   const initialValues: RegisterValues = {
     coupon_term: "",
@@ -105,6 +106,7 @@ const AddCoupon: React.FC = () => {
       console.log(json);
       setMessage("Coupon added.");
       setSuccessful(true);
+      navigate("/couponmanager")
     } catch (error) {
       console.log("merchant id", id)
       console.log(error);
