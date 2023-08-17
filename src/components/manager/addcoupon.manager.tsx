@@ -51,7 +51,7 @@ const AddCoupon: React.FC = () => {
     start_date: Yup.date().required("This field is required"),
     end_date: Yup.date().required("This field is required"),
     coupon_type: Yup.string().required("This field is required."),
-    redeem_code: Yup.string().required("This is field is required"),
+    redeem_code: Yup.string().required("This is field is required").length(6),
   });
   let accessTkn = localStorage.getItem("accessToken") || "";
   let id = localStorage.getItem("merchantId") ?? 10
@@ -222,7 +222,7 @@ const AddCoupon: React.FC = () => {
                       </InputGroup.Text>
                       <Field
                         name="redeem_code"
-                        type="text"
+                        type="number"
                         className="form-control"
                         placeholder="6-digit code"
                       />
