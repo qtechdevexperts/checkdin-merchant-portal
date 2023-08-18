@@ -194,7 +194,7 @@ const BusinessAccount: React.FC = () => {
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
               <div className="d-block mb-4 mb-md-0">
                 <h4>{userHash?.get('custom:business_name')}</h4>
-                <p className="mb-0">View and manage company profile</p>
+                <p className="mb-0">View and manage business profile</p>
               </div>
               <Button
                 as={Link}
@@ -287,7 +287,7 @@ const BusinessAccount: React.FC = () => {
               <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
                 <div className="d-block mb-4 mb-md-0">
                   <h4>{userHash?.get('custom:business_name')}</h4>
-                  <p className="mb-0">View and manage company profile</p>
+                  <p className="mb-0">View and manage business profile</p>
                 </div>
                 <Button
                   as={Link}
