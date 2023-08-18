@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import QRCode from "react-qr-code";
 import {
   Row,
@@ -32,6 +32,8 @@ const CouponManagerTable: React.FC = () => {
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
+  const qrCodeRef: any = useRef(null);
+
   const fetchCoupens = async () => {
     let accessTkn = localStorage.getItem("accessToken") || "";
     const res = await fetch("https://api.chekdin.com/api/v1/coupon/my-coupons", {
@@ -62,6 +64,23 @@ const CouponManagerTable: React.FC = () => {
     todayDate = `${year}-${month}-${day}`;
   }, [])
 
+  const handleDownload = () => {
+    const qrCodeBlob = new Blob([qrCodeRef?.current?.outerHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(qrCodeBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'qrcode.html';
+    link.click();
+  };
+
+  const handlePrint: any = () => {
+    const printWindow: any = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Print QR Code</title></head><body>');
+    printWindow.document.write(qrCodeRef.current.outerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  };
 
   const fetchTable = async () => {
     let userID = localStorage.getItem("userID") || "";
@@ -482,6 +501,7 @@ const CouponManagerTable: React.FC = () => {
                   }}
                   value={QRvalue}
                   viewBox={`0 0 256 256`}
+                  ref={qrCodeRef}
                 />
               </Container>
               <Row className="justify-content-md-center">
@@ -495,11 +515,12 @@ const CouponManagerTable: React.FC = () => {
               </Row>
               <Row className="justify-content-md-center">
                 <Button
-                  onClick={() => {
-                    alert(
-                      "Download your QR code when the mobile app goes live."
-                    );
-                  }}
+                  // onClick={() => {
+                  //   alert(
+                  //     "Download your QR code when the mobile app goes live."
+                  //   );
+                  // }}
+                  onClick={handlePrint}
                 >
                   Download
                 </Button>
@@ -539,6 +560,7 @@ const CouponManagerTable: React.FC = () => {
                       }}
                       value={QRvalue}
                       viewBox={`0 0 512 512`}
+                      ref={qrCodeRef}
                     />
                   </div>
                   <Row className="justify-content-md-center mt-2">
@@ -553,11 +575,12 @@ const CouponManagerTable: React.FC = () => {
                   <div className="mt-1">
                     <Row className=" justify-content-md-center">
                       <Button
-                        onClick={() => {
-                          alert(
-                            "Download your QR code when the mobile app goes live."
-                          );
-                        }}
+                        // onClick={() => {
+                        //   alert(
+                        //     "Download your QR code when the mobile app goes live."
+                        //   );
+                        // }}
+                        onClick={handlePrint}
                       >
                         Download
                       </Button>
