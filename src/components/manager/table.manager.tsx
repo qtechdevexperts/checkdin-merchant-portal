@@ -22,7 +22,8 @@ import {
   ACTIVE_ITEM_COUPON_MANAGER_URL,
   QR_CODE_COUPON_URL,
 } from "../../constants";
-import axios from "axios";
+import Modal from 'react-bootstrap/Modal';
+
 
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
@@ -32,6 +33,7 @@ const CouponManagerTable: React.FC = () => {
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
+  const [modalShow, setModalShow] = React.useState(false);
   const qrCodeRef: any = useRef(null);
 
   const fetchCoupens = async () => {
@@ -335,6 +337,7 @@ const CouponManagerTable: React.FC = () => {
                                 as={Button}
                                 onClick={() => {
                                   setQRValue(item.id + '_coupon');
+                                  setModalShow(true)
                                 }}
                                 className="text-primary"
                               >
@@ -460,6 +463,7 @@ const CouponManagerTable: React.FC = () => {
                                 as={Button}
                                 onClick={() => {
                                   setQRValue(item.id + '_coupon');
+                                  setModalShow(true)
                                 }}
                                 className="text-primary"
                               >
@@ -487,118 +491,150 @@ const CouponManagerTable: React.FC = () => {
       </Card>
 
       {isMobile ? (
-        <Row className="justify-content-md-center text-center">
-          <Card>
-            <Card.Body>
-              <h3>QR Code</h3>
-              <Container>
-                <QRCode
-                  size={480}
-                  style={{
-                    height: "auto",
-                    maxWidth: "100%",
-                    width: "100%",
-                  }}
-                  value={QRvalue}
-                  viewBox={`0 0 256 256`}
-                  ref={qrCodeRef}
-                />
-              </Container>
-              <Row className="justify-content-md-center">
-                <Col className="text-center">
-                  <p>
-                    {isQRCode
-                      ? "Make sure a Viewer Coupon and a Chekdin Coupon is active."
-                      : ""}
-                  </p>
-                </Col>
-              </Row>
-              <Row className="justify-content-md-center">
-                <Button
-                  // onClick={() => {
-                  //   alert(
-                  //     "Download your QR code when the mobile app goes live."
-                  //   );
-                  // }}
-                  onClick={handlePrint}
-                >
-                  Download
-                </Button>
-              </Row>
-              <Row className="justify-content-md-center">
-                <Col className="text-center">
-                  <p>
-                    Please print and place QR Code where your chekdin users can
-                    easily see and scan.
-                  </p>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Row>
-      ) : (
-        <Row className="justify-content-md-center">
-          <Col xs={6} className="px-2 mt-2">
-            <Card border="light" className="shadow-sm">
-              <Card.Body>
-                <h3>QR Code</h3>
-                <Container>
-                  <div
-                    style={{
-                      height: "auto",
-                      margin: "0 auto",
-                      maxWidth: 128,
-                      width: "100%",
-                    }}
-                  >
+        <Modal
+          show={isMobile && modalShow}
+          onHide={() => setModalShow(false)}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              QR Code
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row className="justify-content-md-center text-center">
+              <Card>
+                <Card.Body>
+                  <h3>QR Code</h3>
+                  <Container>
                     <QRCode
-                      size={512}
+                      size={480}
                       style={{
                         height: "auto",
                         maxWidth: "100%",
                         width: "100%",
                       }}
                       value={QRvalue}
-                      viewBox={`0 0 512 512`}
+                      viewBox={`0 0 256 256`}
                       ref={qrCodeRef}
                     />
-                  </div>
-                  <Row className="justify-content-md-center mt-2">
+                  </Container>
+                  <Row className="justify-content-md-center">
                     <Col className="text-center">
                       <p>
                         {isQRCode
-                          ? ""
-                          : "Make sure a Viewer Coupon and a Chekdin Coupon is active."}
+                          ? "Make sure a Viewer Coupon and a Chekdin Coupon is active."
+                          : ""}
                       </p>
                     </Col>
                   </Row>
-                  <div className="mt-1">
-                    <Row className=" justify-content-md-center">
-                      <Button
-                        // onClick={() => {
-                        //   alert(
-                        //     "Download your QR code when the mobile app goes live."
-                        //   );
-                        // }}
-                        onClick={handlePrint}
-                      >
-                        Download
-                      </Button>
-                    </Row>
-                  </div>
-                  <Row className="justify-content-md-center mt-2">
+                  <Row className="justify-content-md-center">
+                    <Button
+                      // onClick={() => {
+                      //   alert(
+                      //     "Download your QR code when the mobile app goes live."
+                      //   );
+                      // }}
+                      onClick={handlePrint}
+                    >
+                      Download
+                    </Button>
+                  </Row>
+                  <Row className="justify-content-md-center">
                     <Col className="text-center">
                       <p>
-                        Please print and place QR Code where your chekdin users
-                        can easily see and scan.
+                        Please print and place QR Code where your chekdin users can
+                        easily see and scan.
                       </p>
                     </Col>
                   </Row>
-                </Container>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                </Card.Body>
+              </Card>
+            </Row>
+          </Modal.Body>
+        </Modal>
+
+      ) : (
+        <Modal
+          show={!isMobile && modalShow}
+          onHide={() => setModalShow(false)}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              QR CODE
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row className="justify-content-md-center">
+              <Col xs={6} className="px-2 mt-2">
+                <Card border="light" className="shadow-sm">
+                  <Card.Body>
+                    <h3>QR Code</h3>
+                    <Container>
+                      <div
+                        style={{
+                          height: "auto",
+                          margin: "0 auto",
+                          maxWidth: 128,
+                          width: "100%",
+                        }}
+                      >
+                        <QRCode
+                          size={512}
+                          style={{
+                            height: "auto",
+                            maxWidth: "100%",
+                            width: "100%",
+                          }}
+                          value={QRvalue}
+                          viewBox={`0 0 512 512`}
+                          ref={qrCodeRef}
+                        />
+                      </div>
+                      <Row className="justify-content-md-center mt-2">
+                        <Col className="text-center">
+                          <p>
+                            {isQRCode
+                              ? ""
+                              : "Make sure a Viewer Coupon and a Chekdin Coupon is active."}
+                          </p>
+                        </Col>
+                      </Row>
+                      <div className="mt-1">
+                        <Row className=" justify-content-md-center">
+                          <Button
+                            // onClick={() => {
+                            //   alert(
+                            //     "Download your QR code when the mobile app goes live."
+                            //   );
+                            // }}
+                            onClick={handlePrint}
+                          >
+                            Download
+                          </Button>
+                        </Row>
+                      </div>
+                      <Row className="justify-content-md-center mt-2">
+                        <Col className="text-center">
+                          <p>
+                            Please print and place QR Code where your chekdin users
+                            can easily see and scan.
+                          </p>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Modal.Body>
+        </Modal>
+
       )}
     </div>
   );
