@@ -270,7 +270,7 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount ?? 0 + "%" + " Off";
                     }
 
-                    if (new Date(item.expiry_date) > new Date()) {
+                    if (new Date(item.expiry_date) > new Date() && new Date() > new Date(item.start_date)) {
                       status = "Active";
                     } else {
                       status = "Inactive";
@@ -395,7 +395,7 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount + "%" + " Off";
                     }
 
-                    if (new Date(item.expiry_date) > new Date()) {
+                    if (new Date(item.expiry_date) > new Date() && new Date() > new Date(item.start_date)) {
                       status = "Active";
                     } else {
                       status = "Inactive";
