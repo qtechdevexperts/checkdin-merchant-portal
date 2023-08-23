@@ -179,7 +179,6 @@ const CouponManagerTable: React.FC = () => {
 
   const deleteItem = async (UID: string | number) => {
     let accessTkn = localStorage.getItem("accessToken") || "";
-    console.log("token ==>", accessTkn)
     let requestBody = {
       method: "DELETE",
       headers: {

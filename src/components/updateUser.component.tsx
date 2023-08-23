@@ -11,18 +11,21 @@ import { RoutePath } from "../router/routes";
 import Uploader from "./uploader.component";
 import UpdateHours from "./updateHours.component";
 import ProfilePictureUploader from "./profilePictureUploader.component";
+import mime from "mime";
 
 const UpdatedUser: React.FC = () => {
 
   // State Variables 
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
+  const [File, setFile] = useState<any>();
   const [merchantProfile, setMerchantProfile] = useState({
     name: "",
     description: "",
     website: "",
     address: "",
     contact_number: "",
+    profile_img: ""
   })
   const inputRef = useRef(null)
   const formikRef: any = useRef(null);
@@ -68,12 +71,14 @@ const UpdatedUser: React.FC = () => {
     business_website: string;
     business_address: string;
     phone_number: string;
+    profile_picture: File | string;
   } = {
     business_name: merchantProfile.name,
     business_volume: merchantProfile.description,
     business_website: merchantProfile.website,
     business_address: merchantProfile.address,
     phone_number: merchantProfile.contact_number,
+    profile_picture: merchantProfile.profile_img
   };
 
   var scheduleData =
@@ -135,29 +140,42 @@ const UpdatedUser: React.FC = () => {
   const updateUser = async (formValue: any) => {
     const accessTkn = localStorage.getItem("accessToken") || "";
     let id = localStorage.getItem("merchantId")
-
-    let body = {
-      id: id,
-      name: formValue.business_name,
-      contact_number: formValue.phone_number,
-      description: formValue.business_volume,
-      address: formValue.business_address,
-      website: formValue.business_website,
-      latitude: 2.222,
-      longitude: 1.222
-    }
+    let formData = new FormData();
+    formData.append("id", JSON.stringify(id))
+    formData.append("name", formValue.business_name)
+    formData.append("contact_number", formValue.phone_number)
+    formData.append("description", formValue.business_volume)
+    formData.append("address", formValue.business_address)
+    formData.append("website", formValue.business_website)
+    formData.append("profile_img", File)
+    formData.append("latitude", JSON.stringify(2.222))
+    formData.append("longitude", JSON.stringify(1.222))
+    // let body = {
+    //   id: id,
+    //   name: formValue.business_name,
+    //   contact_number: formValue.phone_number,
+    //   description: formValue.business_volume,
+    //   address: formValue.business_address,
+    //   website: formValue.business_website,
+    //   profile_img: File.name,
+    //   latitude: 2.222,
+    //   longitude: 1.222
+    // }
 
     let requestBody = {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
+        // "content-type": "multipart/form-data; boundary=------WebKitFormBoundaryaM6nZ8doKkK6IJxi",
         "Authorization": `Bearer ${JSON.parse(accessTkn)}`
       },
+
+      // ------WebKitFormBoundaryaM6nZ8doKkK6IJxi
       // body: JSON.stringify({
       //   // accessToken: JSON.parse(accessTkn),
       //   attributes: formValue,
       // }),
-      body: JSON.stringify(body),
+      // body: JSON.stringify(formData),
+      body: formData,
     };
 
     try {
@@ -194,12 +212,12 @@ const UpdatedUser: React.FC = () => {
           </p>
         </div>
       </div>
-      <Card>
+      {/* <Card>
         <Card.Body>
           <h5 className="mb-4">Update Profile Picture</h5>
           <ProfilePictureUploader />
         </Card.Body>
-      </Card>
+      </Card> */}
 
       <Card className="mt-4">
         <Card.Body>
@@ -301,6 +319,28 @@ const UpdatedUser: React.FC = () => {
                     </InputGroup>
                     <ErrorMessage
                       name="business_address"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </FormBS.Group>
+                </Col>
+                <Col md={4} className="mb-3">
+                  <FormBS.Group id="profile_picture" className="mb-4">
+                    <FormBS.Label>Profile Picture</FormBS.Label>
+                    <InputGroup>
+                      <InputGroup.Text></InputGroup.Text>
+                      <Field
+                        id="profile_picture"
+                        name="profile_picture"
+                        type="file"
+                        onChange={(event: any) => {
+                          setFile(event.currentTarget.files[0]);
+                        }}
+                        className="form-control"
+                      />
+                    </InputGroup>
+                    <ErrorMessage
+                      name="profile_picture"
                       component="div"
                       className="alert alert-danger"
                     />

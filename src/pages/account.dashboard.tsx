@@ -30,7 +30,8 @@ const BusinessAccount: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [userHash, setUserHash] = useState<Map<any, any>>()
   const [merchantProfile, setMerchantProfile]: any = useState({
-    description: ''
+    description: '',
+    profile_img_url: ''
   })
 
 
@@ -276,7 +277,7 @@ const BusinessAccount: React.FC = () => {
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
                   <h5 className="mb-4">Profile Picture</h5>
-                  <ProfilePictureMenu />
+                  <ProfilePictureMenu image={merchantProfile.profile_img_url} />
                 </Card.Body>
               </Card>
             </div>
@@ -381,7 +382,7 @@ const BusinessAccount: React.FC = () => {
                   <Card border="light" className="bg-white shadow-sm mb-4">
                     <Card.Body>
                       <h5 className="mb-4">Profile Picture</h5>
-                      <ProfilePictureMenu />
+                      <ProfilePictureMenu image={merchantProfile.profile_img_url} />
                     </Card.Body>
                   </Card>
                 </Col>
