@@ -16,6 +16,7 @@ import PostStripe from './components/postStripe.componenet';
 import UpdateUserDashboard from './pages/updateUser.dashboard';
 import ForgotPassword from './components/forgotPassword.component';
 import ConfirmForgotPassword from './components/confirmForgotPassword.component';
+import CouponHistory from './components/manager/history.manager';
 
 const App: React.FC = () => {
 
@@ -37,6 +38,7 @@ const App: React.FC = () => {
         {/* <Route path="/addcoupon" element={<AddCouponPage />} /> */}
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/updateuser" element={<UpdateUserDashboard />} />
+        <Route path="/history/:id" element={<PrivateRoute><CouponHistory /></PrivateRoute>} />
       </Routes>
     </Container>
   );

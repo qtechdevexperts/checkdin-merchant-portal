@@ -23,6 +23,7 @@ import {
   QR_CODE_COUPON_URL,
 } from "../../constants";
 import Modal from 'react-bootstrap/Modal';
+import { Link } from "react-router-dom";
 
 
 const CouponManagerTable: React.FC = () => {
@@ -349,6 +350,19 @@ const CouponManagerTable: React.FC = () => {
                                 />
                                 Generate QR
                               </Dropdown.Item>
+                              <Dropdown.Item
+                                as={Button}
+                                className="text-primary"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className="me-2"
+                                />
+
+                                <Link to={`/history/${item.id}`} style={{ textDecoration: "none" }}>
+                                  Redeem History
+                                </Link>
+                              </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
                         </td>
@@ -474,6 +488,19 @@ const CouponManagerTable: React.FC = () => {
                                   className="me-2"
                                 />
                                 Generate QR
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                as={Button}
+                                className="text-primary"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className="me-2"
+                                />
+
+                                <Link to={`/history/${item.id}`} style={{ textDecoration: "none" }}>
+                                  Redeem History
+                                </Link>
                               </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
