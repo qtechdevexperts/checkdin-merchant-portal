@@ -179,19 +179,23 @@ const CouponHistory: React.FC = () => {
         }
     };
 
-    const deleteItem = async (UID: string | number) => {
+    const deleteItem = async (UID: string | number, CID: string | number) => {
+        let bodyReq = JSON.stringify({
+            coupon_id: CID,
+            user_id: UID
+        })
         let accessTkn = localStorage.getItem("accessToken") || "";
         let requestBody = {
-            method: "DELETE",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${JSON.parse(accessTkn)}`
             },
-
+            body: bodyReq
         };
 
         try {
-            let response = await fetch(`${DELETE_ITEM_COUPON_MANAGER_URL}?id=${UID}`, requestBody);
+            let response = await fetch(`https://www.api.chekding.com/api/v1/coupon/undo-coupon-redemption`, requestBody);
             console.log(response);
 
             setIsDeleted(true);
@@ -286,6 +290,40 @@ const CouponHistory: React.FC = () => {
                                                 </td>
                                                 <td>
                                                     <span className="fw-normal">{item.created_at}</span>
+                                                </td>
+                                                <td>
+                                                    <Dropdown as={ButtonGroup}>
+                                                        <Dropdown.Toggle
+                                                            as={Button}
+                                                            split
+                                                            variant="link"
+                                                            className="text-dark m-0 p-0"
+                                                        >
+                                                            <span className="icon icon-sm">
+                                                                <FontAwesomeIcon
+                                                                    icon={faEllipsisH}
+                                                                    className="icon-dark"
+                                                                />
+                                                            </span>
+                                                        </Dropdown.Toggle>
+                                                        <Dropdown.Menu>
+
+                                                            <Dropdown.Item
+                                                                as={Button}
+                                                                onClick={() => {
+                                                                    deleteItem(item.user_id, item.coupon_id);
+
+                                                                }}
+                                                                className="text-danger"
+                                                            >
+                                                                <FontAwesomeIcon
+                                                                    icon={faTrashAlt}
+                                                                    className="me-2"
+                                                                />
+                                                                Undo Coupon
+                                                            </Dropdown.Item>
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
                                                 </td>
 
                                             </tr>
