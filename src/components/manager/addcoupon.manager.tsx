@@ -28,8 +28,10 @@ import FormData from "form-data";
 const AddCoupon: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
-  const [chekdinCouponImage, setChekdinCouponImage] = useState<any>();
-  const [viewCouponImage, setViewCouponImage] = useState<any>();
+  const [chekdinCouponImage, setChekdinCouponImage] = useState<any>({
+    name: "",
+  });
+  const [viewCouponImage, setViewCouponImage] = useState<any>({ name: "" });
   let navigate: NavigateFunction = useNavigate();
 
   const initialValues: RegisterValues = {
@@ -580,6 +582,11 @@ const AddCoupon: React.FC = () => {
                           }}
                         />
                       </InputGroup>
+                      {chekdinCouponImage?.name && (
+                        <div className="mt-2">
+                          Selected Image: {chekdinCouponImage.name}
+                        </div>
+                      )}
                       <ErrorMessage
                         name="chekdin_coupon_img_url"
                         component="div"
@@ -605,6 +612,11 @@ const AddCoupon: React.FC = () => {
                           }}
                         />
                       </InputGroup>
+                      {viewCouponImage?.name && (
+                        <div className="mt-2">
+                          Selected Image: {viewCouponImage.name}
+                        </div>
+                      )}
                       <ErrorMessage
                         name="view_coupon_img_url"
                         component="div"
