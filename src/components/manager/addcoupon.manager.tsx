@@ -102,7 +102,7 @@ const AddCoupon: React.FC = () => {
   let id = localStorage.getItem("merchantId") ?? 10;
 
   const handleSubmit = async (formValue: RegisterValues) => {
-    const formData = new FormData();
+    let formData = new FormData();
 
     // Append each form field's value to the formData object
     formData.append("chekdin_name", formValue.chekdin_name);
@@ -196,7 +196,15 @@ const AddCoupon: React.FC = () => {
     //   //   view_coupon_img_url,
     //   // }),
     // };
-    const request = {
+    // const request = {
+    //   method: "POST",
+    //   headers: {
+    //     // "content-type": "multipart/form-data; boundary=------WebKitFormBoundaryaM6nZ8doKkK6IJxi",
+    //     "Authorization": `Bearer ${JSON.parse(accessTkn)}`,
+    //   },
+    //   body: formData,
+    // };
+    let requestBody: any = {
       method: "POST",
       headers: {
         Authorization: `Bearer ${JSON.parse(accessTkn)}`,
@@ -205,7 +213,7 @@ const AddCoupon: React.FC = () => {
     };
 
     try {
-      let response = await fetch(ADD_ITEM_COUPON_MANAGER_URL, request);
+      let response = await fetch(ADD_ITEM_COUPON_MANAGER_URL, requestBody);
       let json = await response.json();
       console.log(json);
       setMessage("Coupon added.");
