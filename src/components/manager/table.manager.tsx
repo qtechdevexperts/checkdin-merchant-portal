@@ -119,7 +119,6 @@ const CouponManagerTable: React.FC = () => {
   };
 
   const getQRCode = async () => {
-    console.log("getQRCode");
     let userID = localStorage.getItem("userID") || "";
     let business_name = localStorage.getItem("business_name") || "";
     let business_address = localStorage.getItem("business_address") || "";
@@ -493,7 +492,6 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  console.log("item", item);
                                   setQRValue(
                                     `{id:${item.id},name:${item.name}}`
                                   );
