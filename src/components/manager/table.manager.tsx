@@ -22,9 +22,8 @@ import {
   ACTIVE_ITEM_COUPON_MANAGER_URL,
   QR_CODE_COUPON_URL,
 } from "../../constants";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
-
 
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
@@ -39,48 +38,54 @@ const CouponManagerTable: React.FC = () => {
 
   const fetchCoupens = async () => {
     let accessTkn = localStorage.getItem("accessToken") || "";
-    const res = await fetch("https://api.chekdin.com/api/v1/coupon/my-coupons", {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(accessTkn)}`
+    const res = await fetch(
+      "https://api.chekdin.com/api/v1/coupon/my-coupons",
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(accessTkn)}`,
+        },
       }
-    })
+    );
     let response = await res.json();
     try {
       if (res.ok && response) {
         // console.log("data", response.data)
-        setTable(response.data)
-        setData(response.data)
+        setTable(response.data);
+        setData(response.data);
       }
+    } catch (err) {
+      console.log("error fetching coupens", err);
     }
-    catch (err) {
-      console.log("error fetching coupens", err)
-    }
-  }
+  };
   let todayDate: Date | string;
   useEffect(() => {
     fetchCoupens();
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
 
     todayDate = `${year}-${month}-${day}`;
-  }, [])
+  }, []);
 
   const handleDownload = () => {
-    const qrCodeBlob = new Blob([qrCodeRef?.current?.outerHTML], { type: 'text/html' });
+    const qrCodeBlob = new Blob([qrCodeRef?.current?.outerHTML], {
+      type: "text/html",
+    });
     const url = URL.createObjectURL(qrCodeBlob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'qrcode.html';
+    link.download = "qrcode.html";
     link.click();
   };
 
   const handlePrint: any = () => {
-    const printWindow: any = window.open('', '_blank');
-    printWindow.document.write('<html><head><title>Print QR Code</title></head><body>');
+    const printWindow: any = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Print QR Code</title></head><body>"
+    );
     printWindow.document.write(qrCodeRef.current.outerHTML);
-    printWindow.document.write('</body></html>');
+    printWindow.document.write("</body></html>");
     printWindow.document.close();
     printWindow.print();
   };
@@ -98,7 +103,6 @@ const CouponManagerTable: React.FC = () => {
         user_id: userID,
       }),
     };
-
 
     try {
       let response = await fetch(GET_ITEMS_COUPON_MANAGER_URL, requestBody);
@@ -184,18 +188,20 @@ const CouponManagerTable: React.FC = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${JSON.parse(accessTkn)}`
+        Authorization: `Bearer ${JSON.parse(accessTkn)}`,
       },
-
     };
 
     try {
-      let response = await fetch(`${DELETE_ITEM_COUPON_MANAGER_URL}?id=${UID}`, requestBody);
+      let response = await fetch(
+        `${DELETE_ITEM_COUPON_MANAGER_URL}?id=${UID}`,
+        requestBody
+      );
       console.log(response);
 
       setIsDeleted(true);
       let res = await fetchTable();
-      fetchCoupens()
+      fetchCoupens();
       if (res.success) {
         setTable(res.data);
         setTableLoaded(true);
@@ -264,7 +270,7 @@ const CouponManagerTable: React.FC = () => {
             <tbody>
               {data.length > 0 ? (
                 data.map((item, i) => {
-                  console.log("item", item)
+                  console.log("item", item);
                   let tag = "";
                   let status = "";
 
@@ -275,7 +281,10 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount ?? 0 + "%" + " Off";
                     }
 
-                    if (new Date(item.expiry_date) > new Date() && new Date() > new Date(item.start_date)) {
+                    if (
+                      new Date(item.expiry_date) > new Date() &&
+                      new Date() > new Date(item.start_date)
+                    ) {
                       status = "Active";
                     } else {
                       status = "Inactive";
@@ -319,7 +328,6 @@ const CouponManagerTable: React.FC = () => {
                               </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
@@ -339,8 +347,10 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(item.id + '_coupon');
-                                  setModalShow(true)
+                                  setQRValue(
+                                    `{id:${item.id},name:${item.name}}`
+                                  );
+                                  setModalShow(true);
                                 }}
                                 className="text-primary"
                               >
@@ -359,7 +369,10 @@ const CouponManagerTable: React.FC = () => {
                                   className="me-2"
                                 />
 
-                                <Link to={`/history/${item.id}`} style={{ textDecoration: "none" }}>
+                                <Link
+                                  to={`/history/${item.id}`}
+                                  style={{ textDecoration: "none" }}
+                                >
                                   Redeem History
                                 </Link>
                               </Dropdown.Item>
@@ -414,7 +427,10 @@ const CouponManagerTable: React.FC = () => {
                       tag = item.discount_amount + "%" + " Off";
                     }
 
-                    if (new Date(item.expiry_date) > new Date() && new Date() > new Date(item.start_date)) {
+                    if (
+                      new Date(item.expiry_date) > new Date() &&
+                      new Date() > new Date(item.start_date)
+                    ) {
                       status = "Active";
                     } else {
                       status = "Inactive";
@@ -458,7 +474,6 @@ const CouponManagerTable: React.FC = () => {
                               </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
@@ -478,8 +493,11 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(item.id + '_coupon');
-                                  setModalShow(true)
+                                  console.log("item", item);
+                                  setQRValue(
+                                    `{id:${item.id},name:${item.name}}`
+                                  );
+                                  setModalShow(true);
                                 }}
                                 className="text-primary"
                               >
@@ -498,7 +516,10 @@ const CouponManagerTable: React.FC = () => {
                                   className="me-2"
                                 />
 
-                                <Link to={`/history/${item.id}`} style={{ textDecoration: "none" }}>
+                                <Link
+                                  to={`/history/${item.id}`}
+                                  style={{ textDecoration: "none" }}
+                                >
                                   Redeem History
                                 </Link>
                               </Dropdown.Item>
@@ -574,8 +595,8 @@ const CouponManagerTable: React.FC = () => {
                   <Row className="justify-content-md-center">
                     <Col className="text-center">
                       <p>
-                        Please print and place QR Code where your chekdin users can
-                        easily see and scan.
+                        Please print and place QR Code where your chekdin users
+                        can easily see and scan.
                       </p>
                     </Col>
                   </Row>
@@ -584,7 +605,6 @@ const CouponManagerTable: React.FC = () => {
             </Row>
           </Modal.Body>
         </Modal>
-
       ) : (
         <Modal
           show={!isMobile && modalShow}
@@ -651,8 +671,8 @@ const CouponManagerTable: React.FC = () => {
                       <Row className="justify-content-md-center mt-2">
                         <Col className="text-center">
                           <p>
-                            Please print and place QR Code where your chekdin users
-                            can easily see and scan.
+                            Please print and place QR Code where your chekdin
+                            users can easily see and scan.
                           </p>
                         </Col>
                       </Row>
@@ -663,7 +683,6 @@ const CouponManagerTable: React.FC = () => {
             </Row>
           </Modal.Body>
         </Modal>
-
       )}
     </div>
   );
