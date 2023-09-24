@@ -85,11 +85,11 @@ const AddCoupon: React.FC = () => {
     chekdin_discount_amount: Yup.string()
       .matches(/^[0-9]+$/, "Must be only digits")
       .max(256, "Max 256 characters")
-      .required("This is field is required"),
+      .required("This field is required"),
     view_discount_amount: Yup.string()
       .matches(/^[0-9]+$/, "Must be only digits")
       .max(256, "Max 256 characters")
-      .required("This is field is required"),
+      .required("This field is required"),
     chekdin_discount_type: Yup.string().required("This field is required"),
     view_discount_type: Yup.string().required("This field is required"),
     chekdin_start_date: Yup.date().required("This field is required"),
