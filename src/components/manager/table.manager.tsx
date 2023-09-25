@@ -34,7 +34,12 @@ interface IQR {
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [QRvalue, setQRValue] = useState<IQR>({});
+  const [QRvalue, setQRValue] = useState<IQR>({
+    id: "",
+    name: "",
+    description: "",
+    discout_value: "",
+  });
   const [isQRCode, setQRCodeExist] = useState<boolean>(false);
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
