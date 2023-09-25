@@ -28,7 +28,7 @@ import { Link } from "react-router-dom";
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [QRvalue, setQRValue] = useState<string>("Activate Coupon");
+  const [QRvalue, setQRValue] = useState<string>("");
   const [isQRCode, setQRCodeExist] = useState<boolean>(false);
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
@@ -140,7 +140,7 @@ const CouponManagerTable: React.FC = () => {
       let json = await response.json();
       let URL = JSON.parse(json.body);
 
-      setQRValue(URL);
+      // setQRValue(URL);
       setQRCodeExist(true);
     } catch (error) {
       setQRCodeExist(false);
@@ -332,7 +332,6 @@ const CouponManagerTable: React.FC = () => {
                                 onClick={() => {
                                   deleteItem(item.id);
                                   if (item.isActive) {
-                                    setQRValue("Activate Coupon");
                                   }
                                 }}
                                 className="text-danger"
@@ -347,7 +346,7 @@ const CouponManagerTable: React.FC = () => {
                                 as={Button}
                                 onClick={() => {
                                   setQRValue(
-                                    `{id:${item.id},name:${item.name}}`
+                                    `{id:${item.id},name:${item.name},description:${item.description},discout_value:${item.discount_amount}}`
                                   );
                                   setModalShow(true);
                                 }}
@@ -478,7 +477,6 @@ const CouponManagerTable: React.FC = () => {
                                 onClick={() => {
                                   deleteItem(item.id);
                                   if (item.isActive) {
-                                    setQRValue("Activate Coupon");
                                   }
                                 }}
                                 className="text-danger"
@@ -493,7 +491,7 @@ const CouponManagerTable: React.FC = () => {
                                 as={Button}
                                 onClick={() => {
                                   setQRValue(
-                                    `{id:${item.id},name:${item.name}}`
+                                    `{id:${item.id},name:${item.name},description:${item.description},discout_value:${item.discount_amount}}`
                                   );
                                   setModalShow(true);
                                 }}

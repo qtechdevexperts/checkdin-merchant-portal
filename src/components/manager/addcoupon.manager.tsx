@@ -392,7 +392,7 @@ const AddCoupon: React.FC = () => {
                       </InputGroup.Text>
                       <Field
                         name="chekdin_discount_amount"
-                        type="text"
+                        type="number"
                         className="form-control"
                       />
                     </InputGroup>
@@ -412,7 +412,7 @@ const AddCoupon: React.FC = () => {
                       </InputGroup.Text>
                       <Field
                         name="view_discount_amount"
-                        type="text"
+                        type="number"
                         className="form-control"
                       />
                     </InputGroup>
