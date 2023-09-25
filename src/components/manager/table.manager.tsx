@@ -25,10 +25,16 @@ import {
 import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
 
+interface IQR {
+  id: string | number;
+  name: string;
+  description: string;
+  discout_value: string | number;
+}
 const CouponManagerTable: React.FC = () => {
   const [table, setTable] = useState<any[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [QRvalue, setQRValue] = useState<string>("");
+  const [QRvalue, setQRValue] = useState<IQR>({});
   const [isQRCode, setQRCodeExist] = useState<boolean>(false);
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
@@ -269,7 +275,6 @@ const CouponManagerTable: React.FC = () => {
             <tbody>
               {data.length > 0 ? (
                 data.map((item, i) => {
-                  console.log("item", item);
                   let tag = "";
                   let status = "";
 
@@ -345,9 +350,12 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(
-                                    `{id:${item.id},name:${item.name},description:${item.description},discout_value:${item.discount_amount}}`
-                                  );
+                                  setQRValue({
+                                    id: item.id,
+                                    name: item.name,
+                                    description: item.description,
+                                    discout_value: item.discount_amount,
+                                  });
                                   setModalShow(true);
                                 }}
                                 className="text-primary"
@@ -490,9 +498,12 @@ const CouponManagerTable: React.FC = () => {
                               <Dropdown.Item
                                 as={Button}
                                 onClick={() => {
-                                  setQRValue(
-                                    `{id:${item.id},name:${item.name},description:${item.description},discout_value:${item.discount_amount}}`
-                                  );
+                                  setQRValue({
+                                    id: item.id,
+                                    name: item.name,
+                                    description: item.description,
+                                    discout_value: item.discount_amount,
+                                  });
                                   setModalShow(true);
                                 }}
                                 className="text-primary"
@@ -562,7 +573,7 @@ const CouponManagerTable: React.FC = () => {
                         maxWidth: "100%",
                         width: "100%",
                       }}
-                      value={QRvalue}
+                      value={JSON.stringify(QRvalue)}
                       viewBox={`0 0 256 256`}
                       ref={qrCodeRef}
                     />
@@ -636,7 +647,7 @@ const CouponManagerTable: React.FC = () => {
                             maxWidth: "100%",
                             width: "100%",
                           }}
-                          value={QRvalue}
+                          value={JSON.stringify(QRvalue)}
                           viewBox={`0 0 512 512`}
                           ref={qrCodeRef}
                         />
