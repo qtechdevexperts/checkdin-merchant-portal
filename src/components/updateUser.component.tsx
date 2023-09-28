@@ -126,7 +126,7 @@ const UpdatedUser: React.FC = () => {
   const validationSchema = Yup.object().shape({
     business_name: Yup.string().max(256, "Max 256 characters"),
     business_volume: Yup.string().max(256, "Max 256 characters"),
-    business_website: Yup.string().max(256, "Max 256 characters").nullable(),
+    business_website: Yup.string().max(256, "Max 256 characters"),
     business_address: Yup.string(),
     phone_number: Yup.string(),
     // .phone("US", true, "Please enter a valid phone number.")
