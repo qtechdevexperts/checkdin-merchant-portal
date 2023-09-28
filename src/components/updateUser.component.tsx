@@ -1,7 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { Row, Col, Form as FormBS, InputGroup, Button, Card, Image } from "@themesberg/react-bootstrap";
+import {
+  Row,
+  Col,
+  Form as FormBS,
+  InputGroup,
+  Button,
+  Card,
+  Image,
+} from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
@@ -14,8 +22,7 @@ import ProfilePictureUploader from "./profilePictureUploader.component";
 import mime from "mime";
 
 const UpdatedUser: React.FC = () => {
-
-  // State Variables 
+  // State Variables
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
   const [File, setFile] = useState<any>();
@@ -25,31 +32,33 @@ const UpdatedUser: React.FC = () => {
     website: "",
     address: "",
     contact_number: "",
-    profile_img: ""
-  })
-  const inputRef = useRef(null)
+    profile_img: "",
+  });
+  const inputRef = useRef(null);
   const formikRef: any = useRef(null);
   let navigate: NavigateFunction = useNavigate();
   useEffect(() => {
     let accessTkn = localStorage.getItem("accessToken");
-    let id = localStorage.getItem("merchantId")
-    console.log("id", id)
-    fetchProfile(id, accessTkn)
-  }, [])
+    let id = localStorage.getItem("merchantId");
+    console.log("id", id);
+    fetchProfile(id, accessTkn);
+  }, []);
 
   const fetchProfile = async (id: any, accessTkn: any) => {
-
-    let res = await fetch(`https://api.chekdin.com/api/v1/merchant/get?id=${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${JSON.parse(accessTkn)}`
+    let res = await fetch(
+      `https://api.chekdin.com/api/v1/merchant/get?id=${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(accessTkn)}`,
+        },
       }
-    })
+    );
     try {
       if (res.ok) {
         let response = await res.json();
-        console.log("res", response.data)
-        setMerchantProfile(response.data)
+        console.log("res", response.data);
+        setMerchantProfile(response.data);
         formikRef.current.setValues({
           business_name: response.data.name,
           business_volume: response.data.description,
@@ -57,12 +66,11 @@ const UpdatedUser: React.FC = () => {
           business_address: response.data.address,
           phone_number: response.data.contact_number,
         });
-
       }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   // configurations
   let initialValues: {
@@ -78,59 +86,49 @@ const UpdatedUser: React.FC = () => {
     business_website: merchantProfile.website,
     business_address: merchantProfile.address,
     phone_number: merchantProfile.contact_number,
-    profile_picture: merchantProfile.profile_img
+    profile_picture: merchantProfile.profile_img,
   };
 
-  var scheduleData =
-  {
-    Monday:
-    {
+  var scheduleData = {
+    Monday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Tuesday:
-    {
+    Tuesday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Wednesday:
-    {
+    Wednesday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Thursday:
-    {
+    Thursday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Friday:
-    {
+    Friday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Saturday:
-    {
+    Saturday: {
       Open: "",
-      Close: ""
+      Close: "",
     },
-    Sunday:
-    {
+    Sunday: {
       Open: "",
-      Close: ""
-    }
-  }
+      Close: "",
+    },
+  };
 
   const fileTypes = ["JPG", "PNG", "GIF"];
-
 
   // Validation and Upload Functions
   const validationSchema = Yup.object().shape({
     business_name: Yup.string().max(256, "Max 256 characters"),
-    business_volume: Yup.string()
-      .max(256, "Max 256 characters"),
-    business_website: Yup.string().max(256, "Max 256 characters"),
+    business_volume: Yup.string().max(256, "Max 256 characters"),
+    business_website: Yup.string().max(256, "Max 256 characters").nullable(),
     business_address: Yup.string(),
-    phone_number: Yup.string()
+    phone_number: Yup.string(),
     // .phone("US", true, "Please enter a valid phone number.")
     // .matches(/^[0-9]+$/, "Must be only digits")
     // .max(10, "Only ten digits are allowed")
@@ -139,17 +137,17 @@ const UpdatedUser: React.FC = () => {
   // Function
   const updateUser = async (formValue: any) => {
     const accessTkn = localStorage.getItem("accessToken") || "";
-    let id = localStorage.getItem("merchantId")
+    let id = localStorage.getItem("merchantId");
     let formData = new FormData();
-    formData.append("id", JSON.stringify(id))
-    formData.append("name", formValue.business_name)
-    formData.append("contact_number", formValue.phone_number)
-    formData.append("description", formValue.business_volume)
-    formData.append("address", formValue.business_address)
-    formData.append("website", formValue.business_website)
-    formData.append("profile_img", File)
-    formData.append("latitude", JSON.stringify(2.222))
-    formData.append("longitude", JSON.stringify(1.222))
+    formData.append("id", JSON.stringify(id));
+    formData.append("name", formValue.business_name);
+    formData.append("contact_number", formValue.phone_number);
+    formData.append("description", formValue.business_volume);
+    formData.append("address", formValue.business_address);
+    formData.append("website", formValue.business_website);
+    formData.append("profile_img", File);
+    formData.append("latitude", JSON.stringify(2.222));
+    formData.append("longitude", JSON.stringify(1.222));
     // let body = {
     //   id: id,
     //   name: formValue.business_name,
@@ -166,7 +164,7 @@ const UpdatedUser: React.FC = () => {
       method: "PATCH",
       headers: {
         // "content-type": "multipart/form-data; boundary=------WebKitFormBoundaryaM6nZ8doKkK6IJxi",
-        "Authorization": `Bearer ${JSON.parse(accessTkn)}`
+        Authorization: `Bearer ${JSON.parse(accessTkn)}`,
       },
 
       // ------WebKitFormBoundaryaM6nZ8doKkK6IJxi
@@ -187,7 +185,7 @@ const UpdatedUser: React.FC = () => {
       // console.log(JSON.parse(json.body));
       setSuccessful(true);
       setMessage("Thank you for submitting.");
-      navigate("/")
+      navigate("/");
       return { success: true };
     } catch (e) {
       console.log(e);
