@@ -38,10 +38,6 @@ export interface RegisterValues {
   chekdin_coupon_type: string;
   chekdin_discount_amount: string | number;
   view_name: string;
-  view_start_date: string;
-  view_expiry_date: string;
-  view_offer_title: string;
-  view_offer_description: string;
   view_url: string;
   view_discount_type: string;
   view_coupon_type: string;

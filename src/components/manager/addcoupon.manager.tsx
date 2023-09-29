@@ -40,16 +40,12 @@ const AddCoupon: React.FC = () => {
     chekdin_expiry_date: "",
     chekdin_offer_title: "",
     chekdin_offer_description: "",
-    chekdin_url: "",
-    chekdin_discount_type: "",
-    chekdin_coupon_type: "",
+    chekdin_url: "abc.com",
+    chekdin_discount_type: "test",
+    chekdin_coupon_type: "test",
     chekdin_discount_amount: "",
     view_name: "",
-    view_start_date: "",
-    view_expiry_date: "",
-    view_offer_title: "",
-    view_offer_description: "",
-    view_url: "",
+    view_url: "abc.com",
     view_discount_type: "Chekdin Coupon",
     view_coupon_type: "Chekdin Coupon",
     view_discount_amount: "",
@@ -67,19 +63,7 @@ const AddCoupon: React.FC = () => {
     chekdin_offer_title: Yup.string()
       .max(256, "Max 256 characters")
       .required("This field is required."),
-    view_offer_title: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
     chekdin_offer_description: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
-    view_offer_description: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
-    chekdin_url: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
-    view_url: Yup.string()
       .max(256, "Max 256 characters")
       .required("This field is required."),
     chekdin_discount_amount: Yup.string()
@@ -93,10 +77,7 @@ const AddCoupon: React.FC = () => {
     chekdin_discount_type: Yup.string().required("This field is required"),
     view_discount_type: Yup.string().required("This field is required"),
     chekdin_start_date: Yup.date().required("This field is required"),
-    view_start_date: Yup.date().required("This field is required"),
     chekdin_expiry_date: Yup.date().required("This field is required"),
-    view_expiry_date: Yup.date().required("This field is required"),
-    coupon_type: Yup.string().required("This field is required."),
   });
   let accessTkn = localStorage.getItem("accessToken") || "";
   let id = localStorage.getItem("merchantId") ?? 10;
@@ -121,11 +102,13 @@ const AddCoupon: React.FC = () => {
       formValue.chekdin_discount_amount
     );
     formData.append("view_name", formValue.view_name);
-    formData.append("view_start_date", formValue.view_start_date);
-    formData.append("view_expiry_date", formValue.view_expiry_date);
-    formData.append("view_offer_title", formValue.view_offer_title);
-    formData.append("view_offer_description", formValue.view_offer_description);
-    formData.append("view_url", formValue.view_url);
+    formData.append("view_start_date", formValue.chekdin_start_date);
+    formData.append("view_expiry_date", formValue.chekdin_expiry_date);
+    formData.append("view_offer_title", formValue.chekdin_offer_title);
+    formData.append(
+      "view_offer_description",
+      formValue.chekdin_offer_description
+    );
     formData.append("view_discount_type", formValue.view_discount_type);
     formData.append("view_coupon_type", formValue.view_coupon_type);
     formData.append("view_discount_amount", formValue.view_discount_amount);
@@ -317,26 +300,6 @@ const AddCoupon: React.FC = () => {
                     />
                   </FormBS.Group>
                 </Col>
-                <Col md={6} className="mb-3">
-                  <FormBS.Group id="view_offer_title" className="mb-4">
-                    <FormBS.Label>View Offer Title</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faFileLines} />
-                      </InputGroup.Text>
-                      <Field
-                        name="view_offer_title"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="view_offer_title"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
               </Row>
               <Row>
                 <Col md={12} className="mb-3">
@@ -354,28 +317,6 @@ const AddCoupon: React.FC = () => {
                     </InputGroup>
                     <ErrorMessage
                       name="chekdin_offer_description"
-                      component="div"
-                      className="alert alert-danger mt-1"
-                    />
-                  </FormBS.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={12} className="mb-3">
-                  <FormBS.Group id="view_offer_description" className="mb-4">
-                    <FormBS.Label>View Description</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faFileLines} />
-                      </InputGroup.Text>
-                      <Field
-                        name="view_offer_description"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="view_offer_description"
                       component="div"
                       className="alert alert-danger mt-1"
                     />
@@ -454,36 +395,6 @@ const AddCoupon: React.FC = () => {
                   </FormBS.Group>
                 </Col>
               </Row>
-              <Row className="align-items-center">
-                <Col md={6} className="mb-3">
-                  <FormBS.Group id="chekdin_coupon_type" className="mb-4">
-                    <FormBS.Label>Coupon Type</FormBS.Label>
-                    <Field as={FormBS.Select} name="chekdin_coupon_type">
-                      <option value="Chekdin Coupon">Chekdin Coupon</option>
-                      <option value="User Coupon">User Coupon</option>
-                    </Field>
-                    <ErrorMessage
-                      name="chekdin_coupon_type"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
-                <Col md={6} className="mb-3">
-                  <FormBS.Group id="coupon_type" className="mb-4">
-                    <FormBS.Label>Coupon Type</FormBS.Label>
-                    <Field as={FormBS.Select} name="coupon_type">
-                      <option value="Chekdin Coupon">Chekdin Coupon</option>
-                      <option value="User Coupon">User Coupon</option>
-                    </Field>
-                    <ErrorMessage
-                      name="coupon_type"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
-              </Row>
               {/* <Row className="align-items-center">
                 <Col md={6} className="mb-3">
                   <FormBS.Group id="redeem_code" className="mb-4">
@@ -550,28 +461,6 @@ const AddCoupon: React.FC = () => {
                 </Col>
               </Row>
               <Row>
-                <Col md={12} className="mb-3">
-                  <FormBS.Group id="chekdin_url" className="mb-4">
-                    <FormBS.Label>Chekdin URL</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faFileLines} />
-                      </InputGroup.Text>
-                      <Field
-                        name="chekdin_url"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="chekdin_url"
-                      component="div"
-                      className="alert alert-danger mt-1"
-                    />
-                  </FormBS.Group>
-                </Col>
-              </Row>
-              <Row>
                 <Row>
                   <Col md={12} className="mb-3">
                     <FormBS.Group id="chekdin_coupon_img_url" className="mb-4">
@@ -633,68 +522,6 @@ const AddCoupon: React.FC = () => {
                     </FormBS.Group>
                   </Col>
                 </Row>
-                <Col md={12} className="mb-3">
-                  <FormBS.Group id="view_url" className="mb-4">
-                    <FormBS.Label>View URL</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faFileLines} />
-                      </InputGroup.Text>
-                      <Field
-                        name="view_url"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="view_url"
-                      component="div"
-                      className="alert alert-danger mt-1"
-                    />
-                  </FormBS.Group>
-                </Col>
-              </Row>
-              <Row className="align-items-center">
-                <Col md={6} className="mb-3">
-                  <FormBS.Group id="view_start_date" className="mb-4">
-                    <FormBS.Label>View Start Date</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faCalendarAlt} />
-                      </InputGroup.Text>
-                      <Field
-                        name="view_start_date"
-                        type="date"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="view_start_date"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
-                <Col md={6} className="mb-3">
-                  <FormBS.Group id="view_expiry_date" className="mb-4">
-                    <FormBS.Label>View Expity Date</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faCalendarAlt} />
-                      </InputGroup.Text>
-                      <Field
-                        name="view_expiry_date"
-                        type="date"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="view_expiry_date"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
               </Row>
               <div className="mt-1 text-center">
                 <Button className="w-50" variant="primary" type="submit">
