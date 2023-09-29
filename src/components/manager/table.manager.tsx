@@ -505,26 +505,6 @@ const CouponManagerTable: React.FC = () => {
                                           </Dropdown.Item>
                                           <Dropdown.Item
                                             as={Button}
-                                            onClick={() => {
-                                              setQRValue({
-                                                id: value.id,
-                                                name: value.name,
-                                                description: value.description,
-                                                discout_value:
-                                                  value.discount_amount,
-                                              });
-                                              setModalShow(true);
-                                            }}
-                                            className="text-primary"
-                                          >
-                                            <FontAwesomeIcon
-                                              icon={faPowerOff}
-                                              className="me-2"
-                                            />
-                                            Generate QR
-                                          </Dropdown.Item>
-                                          <Dropdown.Item
-                                            as={Button}
                                             className="text-primary"
                                           >
                                             <FontAwesomeIcon
