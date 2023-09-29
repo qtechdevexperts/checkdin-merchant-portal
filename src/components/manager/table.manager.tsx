@@ -371,25 +371,27 @@ const CouponManagerTable: React.FC = () => {
                                   />
                                   Remove
                                 </Dropdown.Item>
-                                <Dropdown.Item
-                                  as={Button}
-                                  onClick={() => {
-                                    setQRValue({
-                                      id: item.id,
-                                      name: item.name,
-                                      description: item.description,
-                                      discout_value: item.discount_amount,
-                                    });
-                                    setModalShow(true);
-                                  }}
-                                  className="text-primary"
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPowerOff}
-                                    className="me-2"
-                                  />
-                                  Generate QR
-                                </Dropdown.Item>
+                                {item.is_active && (
+                                  <Dropdown.Item
+                                    as={Button}
+                                    onClick={() => {
+                                      setQRValue({
+                                        id: item.id,
+                                        name: item.name,
+                                        description: item.description,
+                                        discout_value: item.discount_amount,
+                                      });
+                                      setModalShow(true);
+                                    }}
+                                    className="text-primary"
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPowerOff}
+                                      className="me-2"
+                                    />
+                                    Generate QR
+                                  </Dropdown.Item>
+                                )}
                                 <Dropdown.Item
                                   as={Button}
                                   className="text-primary"
