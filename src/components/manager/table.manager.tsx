@@ -14,6 +14,7 @@ import {
   faEllipsisH,
   faTrashAlt,
   faPowerOff,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -43,6 +44,7 @@ const CouponManagerTable: React.FC = () => {
   const [isQRCode, setQRCodeExist] = useState<boolean>(false);
   const [tableLoaded, setTableLoaded] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [openRows, setOpenRows] = useState<number[]>([]); // Track open rows
   const [data, setData] = useState<any[]>([]);
   const [modalShow, setModalShow] = React.useState(false);
   const qrCodeRef: any = useRef(null);
@@ -261,7 +263,7 @@ const CouponManagerTable: React.FC = () => {
         className="table-wrapper table-responsive shadow-sm mb-3"
       >
         <Card.Header>
-          <b>Viewer Coupon Table</b>
+          <b>Coupon Table</b>
         </Card.Header>
         <Card.Body className="pt-0">
           <Table hover className="user-table align-items-center">
@@ -283,7 +285,7 @@ const CouponManagerTable: React.FC = () => {
                   let tag = "";
                   let status = "";
 
-                  if (item.coupon_type === "User Coupon") {
+                  if (item.parent_coupon === null) {
                     if (item.discount_type === "Fixed") {
                       tag = "$" + item.discount_amount ?? 0 + " Off";
                     } else {
@@ -299,246 +301,253 @@ const CouponManagerTable: React.FC = () => {
                       status = "Inactive";
                     }
                     return (
-                      <tr key={i}>
-                        {/* <td>
+                      <>
+                        <tr key={i}>
+                          {/* <td>
                           <span className="fw-normal">{'item.timeStamp'}</span>
                         </td> */}
-                        <td>
-                          <span className="fw-normal">{item.coupon_code}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{tag}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.offer_title}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.start_date}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.expiry_date}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{status}</span>
-                        </td>
-                        <td>
-                          <Dropdown as={ButtonGroup}>
-                            <Dropdown.Toggle
-                              as={Button}
-                              split
-                              variant="link"
-                              className="text-dark m-0 p-0"
-                            >
-                              <span className="icon icon-sm">
-                                <FontAwesomeIcon
-                                  icon={faEllipsisH}
-                                  className="icon-dark"
-                                />
-                              </span>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              <Dropdown.Item
+                          <td>
+                            <span className="fw-normal">
+                              {item.coupon_code}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="fw-normal">{tag}</span>
+                          </td>
+                          <td>
+                            <span className="fw-normal">
+                              {item.offer_title}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="fw-normal">{item.start_date}</span>
+                          </td>
+                          <td>
+                            <span className="fw-normal">
+                              {item.expiry_date}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="fw-normal">
+                              {item.is_active ? "Active" : "InActive"}
+                            </span>
+                          </td>
+                          <td>
+                            <Dropdown as={ButtonGroup}>
+                              <Dropdown.Toggle
                                 as={Button}
-                                onClick={() => {
-                                  deleteItem(item.id);
-                                  if (item.isActive) {
-                                  }
-                                }}
-                                className="text-danger"
+                                split
+                                variant="link"
+                                className="text-dark m-0 p-0"
                               >
-                                <FontAwesomeIcon
-                                  icon={faTrashAlt}
-                                  className="me-2"
-                                />
-                                Remove
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                as={Button}
-                                onClick={() => {
-                                  setQRValue({
-                                    id: item.id,
-                                    name: item.name,
-                                    description: item.description,
-                                    discout_value: item.discount_amount,
-                                  });
-                                  setModalShow(true);
-                                }}
-                                className="text-primary"
-                              >
-                                <FontAwesomeIcon
-                                  icon={faPowerOff}
-                                  className="me-2"
-                                />
-                                Generate QR
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                as={Button}
-                                className="text-primary"
-                              >
-                                <FontAwesomeIcon
-                                  icon={faPowerOff}
-                                  className="me-2"
-                                />
-
-                                <Link
-                                  to={`/history/${item.id}`}
-                                  style={{ textDecoration: "none" }}
+                                <span className="icon icon-sm">
+                                  {/* <FontAwesomeIcon
+                                    icon={faEllipsisH}
+                                    className="icon-dark"
+                                  /> */}
+                                  <FontAwesomeIcon
+                                    icon={
+                                      openRows.includes(i)
+                                        ? faChevronDown
+                                        : faEllipsisH
+                                    }
+                                    className="icon-dark"
+                                  />
+                                </span>
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <Dropdown.Item
+                                  as={Button}
+                                  onClick={() => {
+                                    deleteItem(item.id);
+                                    if (item.isActive) {
+                                    }
+                                  }}
+                                  className="text-danger"
                                 >
-                                  Redeem History
-                                </Link>
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </td>
-                      </tr>
-                    );
-                  } else {
-                    return <></>;
-                  }
-                })
-              ) : (
-                <></>
-              )}
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
-      <Card
-        border="light"
-        className="table-wrapper table-responsive shadow-sm mb-3"
-      >
-        <Card.Header>
-          <b>Chekdin Coupon Table</b>
-        </Card.Header>
+                                  <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    className="me-2"
+                                  />
+                                  Remove
+                                </Dropdown.Item>
+                                {item.is_active && (
+                                  <Dropdown.Item
+                                    as={Button}
+                                    onClick={() => {
+                                      setQRValue({
+                                        id: item.id,
+                                        name: item.name,
+                                        description: item.description,
+                                        discout_value: item.discount_amount,
+                                      });
+                                      setModalShow(true);
+                                    }}
+                                    className="text-primary"
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPowerOff}
+                                      className="me-2"
+                                    />
+                                    Generate QR
+                                  </Dropdown.Item>
+                                )}
+                                <Dropdown.Item
+                                  as={Button}
+                                  className="text-primary"
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPowerOff}
+                                    className="me-2"
+                                  />
 
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                {/* <th className="border-bottom">Time Created</th> */}
-                <th className="border-bottom">Coupon ID</th>
-                <th className="border-bottom">Tag</th>
-                <th className="border-bottom">Terms</th>
-                <th className="border-bottom">Start Date</th>
-                <th className="border-bottom">End Date</th>
-                <th className="border-bottom">Status</th>
-                <th className="border-bottom">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {table ? (
-                table.map((item, i) => {
-                  let tag = "";
-                  let status = "";
-
-                  if (item.coupon_type === "Chekdin Coupon") {
-                    if (item.discount_type === "Fixed") {
-                      tag = "$" + item.discount_amount + " Off";
-                    } else {
-                      tag = item.discount_amount + "%" + " Off";
-                    }
-
-                    if (
-                      new Date(item.expiry_date) > new Date() &&
-                      new Date() > new Date(item.start_date)
-                    ) {
-                      status = "Active";
-                    } else {
-                      status = "Inactive";
-                    }
-                    return (
-                      <tr key={i}>
-                        {/* <td>
-                          <span className="fw-normal">{item.timeStamp}</span>
+                                  <Link
+                                    to={`/history/${item.id}`}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    Redeem History
+                                  </Link>
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  as={Button}
+                                  onClick={() => {
+                                    // Toggle the open/collapse state for this row
+                                    if (openRows.includes(i)) {
+                                      setOpenRows(
+                                        openRows.filter((row) => row !== i)
+                                      );
+                                    } else {
+                                      setOpenRows([...openRows, i]);
+                                    }
+                                  }}
+                                  className="text-primary"
+                                >
+                                  {openRows.includes(i)
+                                    ? "Hide View Coupons"
+                                    : "See View Coupons"}
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                        </tr>
+                        {openRows.includes(i) &&
+                          data?.map((value, index) => {
+                            if (value.parent_coupon === item.id) {
+                              return (
+                                <>
+                                  <tr
+                                    key={i}
+                                    style={{ backgroundColor: "#C0C0C0" }}
+                                  >
+                                    {/* <td>
+                          <span className="fw-normal">{'item.timeStamp'}</span>
                         </td> */}
-                        <td>
-                          <span className="fw-normal">{item.coupon_code}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{tag}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.offer_title}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.start_date}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{item.expiry_date}</span>
-                        </td>
-                        <td>
-                          <span className="fw-normal">{status}</span>
-                        </td>
-                        <td>
-                          <Dropdown as={ButtonGroup}>
-                            <Dropdown.Toggle
-                              as={Button}
-                              split
-                              variant="link"
-                              className="text-dark m-0 p-0"
-                            >
-                              <span className="icon icon-sm">
-                                <FontAwesomeIcon
-                                  icon={faEllipsisH}
-                                  className="icon-dark"
-                                />
-                              </span>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              <Dropdown.Item
-                                as={Button}
-                                onClick={() => {
-                                  deleteItem(item.id);
-                                  if (item.isActive) {
-                                  }
-                                }}
-                                className="text-danger"
-                              >
-                                <FontAwesomeIcon
-                                  icon={faTrashAlt}
-                                  className="me-2"
-                                />
-                                Remove
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                as={Button}
-                                onClick={() => {
-                                  setQRValue({
-                                    id: item.id,
-                                    name: item.name,
-                                    description: item.description,
-                                    discout_value: item.discount_amount,
-                                  });
-                                  setModalShow(true);
-                                }}
-                                className="text-primary"
-                              >
-                                <FontAwesomeIcon
-                                  icon={faPowerOff}
-                                  className="me-2"
-                                />
-                                Generate QR
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                as={Button}
-                                className="text-primary"
-                              >
-                                <FontAwesomeIcon
-                                  icon={faPowerOff}
-                                  className="me-2"
-                                />
+                                    <td>
+                                      <span className="fw-normal">
+                                        {value.coupon_code}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <span className="fw-normal">{tag}</span>
+                                    </td>
+                                    <td>
+                                      <span className="fw-normal">
+                                        {value.offer_title}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <span className="fw-normal">
+                                        {value.start_date}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <span className="fw-normal">
+                                        {value.expiry_date}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <span className="fw-normal">
+                                        {value.is_active
+                                          ? "Active"
+                                          : "InActive"}
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <Dropdown as={ButtonGroup}>
+                                        <Dropdown.Toggle
+                                          as={Button}
+                                          split
+                                          variant="link"
+                                          className="text-dark m-0 p-0"
+                                        >
+                                          <span className="icon icon-sm">
+                                            <FontAwesomeIcon
+                                              icon={faEllipsisH}
+                                              className="icon-dark"
+                                            />
+                                          </span>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                          <Dropdown.Item
+                                            as={Button}
+                                            onClick={() => {
+                                              deleteItem(value.id);
+                                              if (value.isActive) {
+                                              }
+                                            }}
+                                            className="text-danger"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faTrashAlt}
+                                              className="me-2"
+                                            />
+                                            Remove
+                                          </Dropdown.Item>
+                                          <Dropdown.Item
+                                            as={Button}
+                                            onClick={() => {
+                                              setQRValue({
+                                                id: value.id,
+                                                name: value.name,
+                                                description: value.description,
+                                                discout_value:
+                                                  value.discount_amount,
+                                              });
+                                              setModalShow(true);
+                                            }}
+                                            className="text-primary"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faPowerOff}
+                                              className="me-2"
+                                            />
+                                            Generate QR
+                                          </Dropdown.Item>
+                                          <Dropdown.Item
+                                            as={Button}
+                                            className="text-primary"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faPowerOff}
+                                              className="me-2"
+                                            />
 
-                                <Link
-                                  to={`/history/${item.id}`}
-                                  style={{ textDecoration: "none" }}
-                                >
-                                  Redeem History
-                                </Link>
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </td>
-                      </tr>
+                                            <Link
+                                              to={`/history/${value.id}`}
+                                              style={{ textDecoration: "none" }}
+                                            >
+                                              Redeem History
+                                            </Link>
+                                          </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
+                                    </td>
+                                  </tr>
+                                </>
+                              );
+                            }
+                          })}
+                      </>
                     );
                   } else {
                     return <></>;
