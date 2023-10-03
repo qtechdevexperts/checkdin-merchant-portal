@@ -432,6 +432,13 @@ const CouponManagerTable: React.FC = () => {
                         </tr>
                         {openRows.includes(i) &&
                           data?.map((value, index) => {
+                            let tag = "";
+                            if (value.discount_type === "Fixed") {
+                              tag = "$" + value.discount_amount ?? 0 + " Off";
+                            } else {
+                              tag = value.discount_amount ?? 0 + "%" + " Off";
+                            }
+
                             if (value.parent_coupon === item.id) {
                               return (
                                 <>
