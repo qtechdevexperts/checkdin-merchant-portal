@@ -53,6 +53,8 @@ const AddCoupon: React.FC = () => {
     view_coupon_img_url: "",
   };
 
+  const today = new Date().toISOString().split("T")[0]; // Get today's date in yyyy-mm-dd format
+
   const validationSchema = Yup.object().shape({
     chekdin_name: Yup.string()
       .max(256, "Max 256 characters")
@@ -76,8 +78,21 @@ const AddCoupon: React.FC = () => {
       .required("This field is required"),
     chekdin_discount_type: Yup.string().required("This field is required"),
     view_discount_type: Yup.string().required("This field is required"),
-    chekdin_start_date: Yup.date().required("This field is required"),
-    chekdin_expiry_date: Yup.date().required("This field is required"),
+    chekdin_start_date: Yup.date()
+      .required("This field is required")
+      .test(
+        "start-date-before-expiry",
+        "Start date must be before expiry date",
+        function (value) {
+          const expiryDate: any = this.resolve(Yup.ref("chekdin_expiry_date"));
+          return (
+            !value || !expiryDate || new Date(value) <= new Date(expiryDate)
+          );
+        }
+      ),
+    chekdin_expiry_date: Yup.date()
+      .required("This field is required")
+      .min(today, "Please select a date today or after today"),
   });
   let accessTkn = localStorage.getItem("accessToken") || "";
   let id = localStorage.getItem("merchantId") ?? 10;
@@ -441,7 +456,7 @@ const AddCoupon: React.FC = () => {
                 </Col>
                 <Col md={6} className="mb-3">
                   <FormBS.Group id="chekdin_expiry_date" className="mb-4">
-                    <FormBS.Label>Chekdin Expity Date</FormBS.Label>
+                    <FormBS.Label>Chekdin Expiry Date</FormBS.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faCalendarAlt} />
