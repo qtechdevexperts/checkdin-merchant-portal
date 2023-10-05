@@ -35,7 +35,7 @@ const AddCoupon: React.FC = () => {
   let navigate: NavigateFunction = useNavigate();
 
   const initialValues: RegisterValues = {
-    chekdin_name: "",
+    chekdin_name: "-",
     chekdin_start_date: "",
     chekdin_expiry_date: "",
     chekdin_offer_title: "",
@@ -44,7 +44,8 @@ const AddCoupon: React.FC = () => {
     chekdin_discount_type: "test",
     chekdin_coupon_type: "test",
     chekdin_discount_amount: "",
-    view_name: "",
+    view_name: "-",
+    view_offer_title: "",
     view_url: "",
     view_discount_type: "Chekdin Coupon",
     view_coupon_type: "Chekdin Coupon",
@@ -56,12 +57,12 @@ const AddCoupon: React.FC = () => {
   const today = new Date().toISOString().split("T")[0]; // Get today's date in yyyy-mm-dd format
 
   const validationSchema = Yup.object().shape({
-    chekdin_name: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
-    view_name: Yup.string()
-      .max(256, "Max 256 characters")
-      .required("This field is required."),
+    // chekdin_name: Yup.string()
+    // .max(256, "Max 256 characters")
+    //   // .required("This field is required."),
+    // view_name: Yup.string()
+    //   .max(256, "Max 256 characters")
+    //   .required("This field is required."),
     chekdin_offer_title: Yup.string()
       .max(256, "Max 256 characters")
       .required("This field is required."),
@@ -119,7 +120,7 @@ const AddCoupon: React.FC = () => {
     formData.append("view_name", formValue.view_name);
     formData.append("view_start_date", formValue.chekdin_start_date);
     formData.append("view_expiry_date", formValue.chekdin_expiry_date);
-    formData.append("view_offer_title", formValue.chekdin_offer_title);
+    formData.append("view_offer_title", formValue.view_offer_title);
     formData.append(
       "view_offer_description",
       formValue.chekdin_offer_description
@@ -250,7 +251,7 @@ const AddCoupon: React.FC = () => {
             onSubmit={handleSubmit}
           >
             <Form>
-              <Row>
+              {/* <Row>
                 <Col md={12} className="mb-3">
                   <FormBS.Group id="chekdin_name" className="mb-4">
                     <FormBS.Label>Chekdin Name</FormBS.Label>
@@ -293,9 +294,9 @@ const AddCoupon: React.FC = () => {
                     />
                   </FormBS.Group>
                 </Col>
-              </Row>
+              </Row> */}
               <Row className="align-items-center">
-                <Col md={6} className="mb-3">
+                <Col md={12} className="mb-3">
                   <FormBS.Group id="chekdin_offer_title" className="mb-4">
                     <FormBS.Label>Chekdin Offer Title</FormBS.Label>
                     <InputGroup>
@@ -316,6 +317,28 @@ const AddCoupon: React.FC = () => {
                   </FormBS.Group>
                 </Col>
               </Row>
+              <Row className="align-items-center">
+                <Col md={12} className="mb-3">
+                  <FormBS.Group id="view_offer_title" className="mb-4">
+                    <FormBS.Label>View Offer Title</FormBS.Label>
+                    <InputGroup>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faFileLines} />
+                      </InputGroup.Text>
+                      <Field
+                        name="view_offer_title"
+                        type="text"
+                        className="form-control"
+                      />
+                    </InputGroup>
+                    <ErrorMessage
+                      name="view_offer_title"
+                      component="div"
+                      className="alert alert-danger"
+                    />
+                  </FormBS.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col md={12} className="mb-3">
                   <FormBS.Group id="chekdin_offer_description" className="mb-4">
@@ -328,6 +351,7 @@ const AddCoupon: React.FC = () => {
                         name="chekdin_offer_description"
                         type="text"
                         className="form-control"
+                        component="textarea"
                       />
                     </InputGroup>
                     <ErrorMessage
