@@ -120,7 +120,7 @@ const AddCoupon: React.FC = () => {
     formData.append("view_name", formValue.view_name);
     formData.append("view_start_date", formValue.chekdin_start_date);
     formData.append("view_expiry_date", formValue.chekdin_expiry_date);
-    formData.append("view_offer_title", formValue.chekdin_offer_title);
+    formData.append("view_offer_title", formValue.view_offer_title);
     formData.append(
       "view_offer_description",
       formValue.chekdin_offer_description
