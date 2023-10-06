@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faCircleCheck
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import {
   Nav,
   Navbar,
@@ -19,35 +16,41 @@ import { authSignoutConf } from "../../services/auth.service";
 import { getProfilePicture } from "../../services/user.service";
 
 const NavBar: React.FC = () => {
-
-  const [img, setImg] = useState<string>()
+  let defaultImg =
+    "https://www.htgtrading.co.uk/wp-content/uploads/2016/03/no-user-image-square.jpg";
+  const [img, setImg] = useState<string>(defaultImg);
 
   useEffect(() => {
     let accessTkn = localStorage.getItem("accessToken");
-    let id = localStorage.getItem("merchantId")
-    fetchProfile(id, accessTkn)
-  }, [])
+    let id = localStorage.getItem("merchantId");
+    fetchProfile(id, accessTkn);
+  }, []);
 
   const fetchProfile = async (id: any, accessTkn: any) => {
-
-    let res = await fetch(`https://api.chekdin.com/api/v1/merchant/get?id=${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${JSON.parse(accessTkn)}`
+    let res = await fetch(
+      `https://api.chekdin.com/api/v1/merchant/get?id=${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(accessTkn)}`,
+        },
       }
-    })
+    );
     try {
       if (res.ok) {
         let response = await res.json();
         if (response.data) {
-          setImg(response.data.profile_img_url)
+          if (response.data.profile_img_url) {
+            setImg(response.data.profile_img_url);
+          } else {
+            setImg(defaultImg);
+          }
         }
-
       }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   // useEffect(() => {
   //   const getProfilePhoto = async () => {
@@ -88,7 +91,11 @@ const NavBar: React.FC = () => {
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
-                <Dropdown.Item onClick={authSignoutConf} as={Link} to={RoutePath.Login.path}>
+                <Dropdown.Item
+                  onClick={authSignoutConf}
+                  as={Link}
+                  to={RoutePath.Login.path}
+                >
                   <FontAwesomeIcon icon={faUserCircle} className="me-2" />
                   Logout
                 </Dropdown.Item>
