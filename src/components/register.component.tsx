@@ -123,15 +123,16 @@ const Register: React.FC = () => {
       business_facebook,
       business_twitter,
       business_instagram
-    ).then((res) => {
-      console.log("signup res ==>", res);
-      setMessage("merchant created successfully! needs apporoval")
-    })
-
+    )
+      .then((res) => {
+        console.log("signup res ==>", res);
+        setMessage("merchant created successfully! needs apporoval");
+      })
+      .catch((e) => {
+        console.log("error", e);
+        setMessage("User with this email Already Exists!");
+      });
   };
-
-
-
 
   return (
     <main>
