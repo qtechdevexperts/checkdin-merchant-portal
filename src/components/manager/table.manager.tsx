@@ -377,7 +377,7 @@ const CouponManagerTable: React.FC = () => {
                                     onClick={() => {
                                       setQRValue({
                                         id: item.id,
-                                        name: item.name,
+                                        name: item.title,
                                         description: item.description,
                                         discout_value: item.discount_amount,
                                       });
