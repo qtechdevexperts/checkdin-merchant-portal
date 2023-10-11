@@ -44,6 +44,19 @@ const UpdatedUser: React.FC = () => {
     fetchProfile(id, accessTkn);
   }, []);
 
+  const [positions, setPositions] = useState({ lat: 0, long: 0 });
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setPositions({
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
+      });
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
+  }, []);
+
   const fetchProfile = async (id: any, accessTkn: any) => {
     let res = await fetch(
       `https://api.chekdin.com/api/v1/merchant/get?id=${id}`,
@@ -146,8 +159,8 @@ const UpdatedUser: React.FC = () => {
     formData.append("address", formValue.business_address);
     formData.append("website", formValue.business_website);
     formData.append("profile_img", File);
-    formData.append("latitude", JSON.stringify(2.222));
-    formData.append("longitude", JSON.stringify(1.222));
+    formData.append("latitude", JSON.stringify(positions.lat));
+    formData.append("longitude", JSON.stringify(positions.long));
     // let body = {
     //   id: id,
     //   name: formValue.business_name,
