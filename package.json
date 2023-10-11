@@ -1,7 +1,7 @@
 {
   "name": "checkedin-merchant",
   "version": "0.1.0",
-  "private": ture,
+  "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
