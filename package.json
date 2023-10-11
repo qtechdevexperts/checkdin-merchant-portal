@@ -1,6 +1,6 @@
 {
   "name": "checkedin-merchant",
-  "homepage": "https://dashboard.chekdin.com/",
+  "homepage": "http://localhost/",
   "version": "0.1.0",
   "private": false,
   "dependencies": {
