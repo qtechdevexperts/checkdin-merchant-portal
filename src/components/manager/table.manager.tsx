@@ -443,7 +443,7 @@ const CouponManagerTable: React.FC = () => {
                               return (
                                 <>
                                   <tr
-                                    key={i}
+                                    key={index}
                                     style={{ backgroundColor: "#C0C0C0" }}
                                   >
                                     {/* <td>
