@@ -28,7 +28,7 @@ import { Link } from "react-router-dom";
 
 interface IQR {
   id: string | number;
-  title: string;
+  name: string;
   description: string;
   discout_value: string | number;
 }
@@ -37,7 +37,7 @@ const CouponManagerTable: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [QRvalue, setQRValue] = useState<IQR>({
     id: "",
-    title: "",
+    name: "",
     description: "",
     discout_value: "",
   });
@@ -377,7 +377,7 @@ const CouponManagerTable: React.FC = () => {
                                     onClick={() => {
                                       setQRValue({
                                         id: item.id,
-                                        title: item.title,
+                                        name: item.title,
                                         description: item.description,
                                         discout_value: item.discount_amount,
                                       });
@@ -443,7 +443,7 @@ const CouponManagerTable: React.FC = () => {
                               return (
                                 <>
                                   <tr
-                                    key={i}
+                                    key={index}
                                     style={{ backgroundColor: "#C0C0C0" }}
                                   >
                                     {/* <td>

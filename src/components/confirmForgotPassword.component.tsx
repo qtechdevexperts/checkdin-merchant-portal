@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faUnlockAlt, faHashtag } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faUnlockAlt,
+  faHashtag,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Container,
   Col,
@@ -40,7 +44,7 @@ const ConfirmForgotPassword: React.FC = () => {
     password: Yup.string()
       .required("This field is required.")
       .min(8, "Password requires more than 8 characters")
-      .matches(/^(?=.*[!@#\$%\^&\*])/, "Password requires a special character")
+      .matches(/^(?=.*[!@#$%^&*])/, "Password requires a special character")
       .matches(/^(?=.*[A-Z])/, "Password requires an uppercase letter")
       .matches(/^(?=.*[0-9])/, "Password requires a number"),
     confirmPassword: Yup.string()
@@ -63,7 +67,9 @@ const ConfirmForgotPassword: React.FC = () => {
 
         if (response.data.body) {
           setSuccessful(true);
-          setMessage("Password change successful! Redirecting you to login page.");
+          setMessage(
+            "Password change successful! Redirecting you to login page."
+          );
 
           setTimeout(() => {
             navigate("/login");
