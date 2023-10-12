@@ -17,7 +17,7 @@ const Map = ({ setPosition }: any) => {
     lng: 131.044,
   };
 
-  const [markerPosition, setMarkerPosition] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState<any>(null);
 
   const mapOptions = {
     clickableIcons: false,
