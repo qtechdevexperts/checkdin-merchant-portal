@@ -20,6 +20,7 @@ import Uploader from "./uploader.component";
 import UpdateHours from "./updateHours.component";
 import ProfilePictureUploader from "./profilePictureUploader.component";
 import mime from "mime";
+import Map from "./Map";
 
 const UpdatedUser: React.FC = () => {
   // State Variables
@@ -44,13 +45,13 @@ const UpdatedUser: React.FC = () => {
     fetchProfile(id, accessTkn);
   }, []);
 
-  const [positions, setPositions] = useState({ lat: 0, long: 0 });
+  const [positions, setPositions] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
       setPositions({
         lat: position.coords.latitude,
-        long: position.coords.longitude,
+        lng: position.coords.longitude,
       });
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
@@ -160,7 +161,7 @@ const UpdatedUser: React.FC = () => {
     formData.append("website", formValue.business_website);
     formData.append("profile_img", File);
     formData.append("latitude", JSON.stringify(positions.lat));
-    formData.append("longitude", JSON.stringify(positions.long));
+    formData.append("longitude", JSON.stringify(positions.lng));
     // let body = {
     //   id: id,
     //   name: formValue.business_name,
@@ -335,6 +336,7 @@ const UpdatedUser: React.FC = () => {
                     />
                   </FormBS.Group>
                 </Col>
+                <Map setPosition={setPositions} />
                 <Col md={4} className="mb-3">
                   <FormBS.Group id="profile_picture" className="mb-4">
                     <FormBS.Label>Profile Picture</FormBS.Label>
