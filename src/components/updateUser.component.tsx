@@ -20,6 +20,7 @@ import Uploader from "./uploader.component";
 import UpdateHours from "./updateHours.component";
 import ProfilePictureUploader from "./profilePictureUploader.component";
 import mime from "mime";
+import Map from "./Map";
 
 const UpdatedUser: React.FC = () => {
   // State Variables
@@ -42,6 +43,19 @@ const UpdatedUser: React.FC = () => {
     let id = localStorage.getItem("merchantId");
     console.log("id", id);
     fetchProfile(id, accessTkn);
+  }, []);
+
+  const [positions, setPositions] = useState({ lat: 0, lng: 0 });
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setPositions({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
   }, []);
 
   const fetchProfile = async (id: any, accessTkn: any) => {
@@ -146,8 +160,8 @@ const UpdatedUser: React.FC = () => {
     formData.append("address", formValue.business_address);
     formData.append("website", formValue.business_website);
     formData.append("profile_img", File);
-    formData.append("latitude", JSON.stringify(2.222));
-    formData.append("longitude", JSON.stringify(1.222));
+    formData.append("latitude", JSON.stringify(positions.lat));
+    formData.append("longitude", JSON.stringify(positions.lng));
     // let body = {
     //   id: id,
     //   name: formValue.business_name,
@@ -322,6 +336,7 @@ const UpdatedUser: React.FC = () => {
                     />
                   </FormBS.Group>
                 </Col>
+                <Map setPosition={setPositions} />
                 <Col md={4} className="mb-3">
                   <FormBS.Group id="profile_picture" className="mb-4">
                     <FormBS.Label>Profile Picture</FormBS.Label>
