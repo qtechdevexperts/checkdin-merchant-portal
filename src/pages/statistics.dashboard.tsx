@@ -14,15 +14,11 @@ import { renderWindow } from "../services/user.service";
 
 const Statistics: React.FC = () => {
   const [title, setTitle] = React.useState("ChekdIn Coupons");
-  const [headerNum, setHeaderNum] = React.useState("0");
+  let headerNum = "0";
   const [tableFlag, setTableFlag] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
 
   useEffect(() => {
     (async () => {
-      if (await renderWindow()) setIsMobile(true);
-      else setIsMobile(false);
-
       window.addEventListener("resize", renderWindow);
     })();
   }, []);
