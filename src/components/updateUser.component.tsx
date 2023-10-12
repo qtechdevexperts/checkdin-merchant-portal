@@ -142,7 +142,7 @@ const UpdatedUser: React.FC = () => {
     business_volume: Yup.string().max(256, "Max 256 characters"),
     business_website: Yup.string().max(256, "Max 256 characters"),
     business_address: Yup.string(),
-    phone_number: Yup.string(),
+    phone_number: Yup.string().required("This field is required"),
     // .phone("US", true, "Please enter a valid phone number.")
     // .matches(/^[0-9]+$/, "Must be only digits")
     // .max(10, "Only ten digits are allowed")
@@ -386,7 +386,7 @@ const UpdatedUser: React.FC = () => {
       </Card>
 
       {/* Uploading Hours */}
-      <UpdateHours />
+      {/* <UpdateHours /> */}
 
       {/* Uploader  */}
     </>
