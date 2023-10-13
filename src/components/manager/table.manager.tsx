@@ -375,10 +375,11 @@ const CouponManagerTable: React.FC = () => {
                                   <Dropdown.Item
                                     as={Button}
                                     onClick={() => {
+                                      console.log("item", item);
                                       setQRValue({
                                         id: item.id,
-                                        name: item.title,
-                                        description: item.description,
+                                        name: item.name,
+                                        description: item.offer_description,
                                         discout_value: item.discount_amount,
                                       });
                                       setModalShow(true);
