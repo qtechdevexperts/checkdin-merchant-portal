@@ -17,6 +17,7 @@ import UpdateUserDashboard from "./pages/updateUser.dashboard";
 import ForgotPassword from "./components/forgotPassword.component";
 import ConfirmForgotPassword from "./components/confirmForgotPassword.component";
 import CouponHistory from "./components/manager/history.manager";
+import AccountSetting from "./components/accountsetting.component";
 
 // eslint-disable-next-line
 
@@ -65,6 +66,7 @@ const App: React.FC = () => {
         />
         {/* <Route path="/addcoupon" element={<AddCouponPage />} /> */}
         <Route path="/statistics" element={<Statistics />} />
+        <Route path="/accountsetting" element={<AccountSetting />} />
         <Route path="/updateuser" element={<UpdateUserDashboard />} />
         <Route
           path="/history/:id"

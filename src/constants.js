@@ -26,3 +26,5 @@ export const AUTH_FORGOTPASSWORD_URL = "https://58e26xkko8.execute-api.us-east-1
 export const AUTH_CONFIRMFORGOTPASSWORD_URL = "https://58e26xkko8.execute-api.us-east-1.amazonaws.com/Live/forgotpasswordconfirm";
 export const ACTIVE_ITEM_COUPON_MANAGER_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/activecoupon";
 export const QR_CODE_COUPON_URL = "https://p906wgxwwa.execute-api.us-east-1.amazonaws.com/Live/getqr";
+export const MERCHANT_USER_UPDATE = "https://api.chekdin.com/api/v1/merchant/update-merchant-user";
+export const MERCHANT_USER_GET = "https://api.chekdin.com/api/v1/merchant/get";
