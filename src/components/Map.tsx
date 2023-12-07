@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   GoogleMap,
   LoadScript,
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
+import GooglePlacesAutocomplete, {
+  geocodeByPlaceId,
+  getLatLng,
+} from "react-google-places-autocomplete";
 
-const Map = ({ setPosition }: any) => {
+const Map = ({ setPosition, setAddress }: any) => {
+  const [data, setData] = useState("");
+  //our default data
+
+  useEffect(() => {
+    data === "" ? setData("") : setData(data);
+  }, [data]);
+  // updating our default data
   const containerStyle = {
     width: "100%",
     height: "400px",
@@ -32,27 +43,64 @@ const Map = ({ setPosition }: any) => {
     setPosition(event.latLng.toJSON());
   };
 
+  const handlePlaceSelect = async (result: any) => {
+    debugger;
+    try {
+      const placeId = result.value.place_id;
+      const response = await geocodeByPlaceId(placeId);
+      const coordinates = await getLatLng(response[0]);
+      setMarkerPosition(coordinates);
+      setPosition(coordinates); 
+      setAddress(result.description); 
+    } catch (error) {
+      console.error("Error fetching location details", error);
+    }
+  };
+
   return (
-    <LoadScript googleMapsApiKey="AIzaSyBUYUSLiHDE7SZurjNe2um_i4hy7hVajjw">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={4}
-        onClick={handleMapClick}
-        options={mapOptions}
-      >
-        {markerPosition && (
+    <>
+      <GooglePlacesAutocomplete
+        apiKey="AIzaSyAP1WqgRg0-Z6zd53NvZTIP95JyI2xLJfU"
+        autocompletionRequest={{
+          componentRestrictions: {
+            country: ["us"], //to set the specific country
+          },
+        }}
+        selectProps={{
+          defaultInputValue: data, //set default value
+          onChange: handlePlaceSelect, //save the value gotten from google
+          placeholder: "Search Location",
+          styles: {
+            input: (provided) => ({
+              ...provided,
+              color: "#222222"
+            }),
+            option: (provided) => ({
+              ...provided,
+              color: "#222222"
+            }),
+            singleValue: (provided) => ({
+              ...provided,
+              color: "#222222"
+            })
+          }
+        }}
+        onLoadFailed={(error) => {
+          console.log(error);
+        }}
+      />
+      {markerPosition && (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={markerPosition}
+          zoom={14}
+          options={mapOptions}
+          onClick={handleMapClick}
+        >
           <Marker position={markerPosition} onClick={handleMarkerClick} />
-        )}
-        {markerPosition && (
-          <InfoWindow position={markerPosition}>
-            <div>
-              Latitude: {markerPosition?.lat}, Longitude: {markerPosition?.lng}
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </LoadScript>
+        </GoogleMap>
+      )}
+    </>
   );
 };
 
