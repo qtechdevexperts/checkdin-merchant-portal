@@ -44,14 +44,15 @@ const Map = ({ setPosition, setAddress }: any) => {
   };
 
   const handlePlaceSelect = async (result: any) => {
-    debugger;
+    // debugger;
     try {
       const placeId = result.value.place_id;
       const response = await geocodeByPlaceId(placeId);
       const coordinates = await getLatLng(response[0]);
+      console.warn('result.description', response[0].formatted_address)
       setMarkerPosition(coordinates);
       setPosition(coordinates); 
-      setAddress(result.description); 
+      setAddress(response[0].formatted_address); 
     } catch (error) {
       console.error("Error fetching location details", error);
     }
@@ -60,7 +61,7 @@ const Map = ({ setPosition, setAddress }: any) => {
   return (
     <>
       <GooglePlacesAutocomplete
-        apiKey="AIzaSyAP1WqgRg0-Z6zd53NvZTIP95JyI2xLJfU"
+        apiKey="AIzaSyBdSky2nI8jY7zxpQF-cWGj2Ol2cT-_r1s"
         autocompletionRequest={{
           componentRestrictions: {
             country: ["us"], //to set the specific country

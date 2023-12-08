@@ -166,7 +166,7 @@ const UpdatedUser: React.FC = () => {
     formData.append("name", formValue.business_name);
     formData.append("contact_number", formValue.phone_number);
     formData.append("description", formValue.business_volume);
-    formData.append("address", formValue.business_address); //selectedAddress
+    formData.append("address", selectedAddress); //selectedAddress
     formData.append("website", formValue.business_website); 
     formData.append("profile_img", File);
     formData.append("latitude", JSON.stringify(selectedPosition.lat));

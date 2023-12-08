@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
                             </Nav.Link>
                         </div>
                         <Nav className="flex-column pt-3 pt-md-0">
-                            <NavItem title="ChekdIn" icon={faCircleCheck} />
+                            {/* <NavItem title="ChekdIn" icon={faCircleCheck} /> */}
                             <NavItem title="Account Settings" icon={faUserEdit} link={RoutePath.AccountSetting.path} />
                             <NavItem title="Business Profile" icon={faBuilding} link={RoutePath.BusinessAccount.path} />
                             <NavItem title="Coupon Manager" icon={faTicket} link={RoutePath.CouponManager.path}/>
