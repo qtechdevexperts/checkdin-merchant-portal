@@ -151,7 +151,14 @@ const UpdatedUser: React.FC = () => {
     // .matches(/^[0-9]+$/, "Must be only digits")
     // .max(10, "Only ten digits are allowed")
   });
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
 
+    // Check if the input consists of only numeric characters
+    if (/^[0-9+]+$/.test(inputValue) || inputValue === "") {
+      formikRef.current.setFieldValue("phone_number", inputValue);
+    }
+  };
   // Function
   const updateUser = async (formValue: any) => {
     console.log('selectedPosition' , selectedPosition)
@@ -310,23 +317,24 @@ const UpdatedUser: React.FC = () => {
                   </FormBS.Group>
                 </Col>
                 <Col md={4} className="mb-3">
-                  <FormBS.Group id="phone_number" className="mb-4">
-                    <FormBS.Label>Phone Number</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text></InputGroup.Text>
-                      <Field
-                        name="phone_number"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="phone_number"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
+              <FormBS.Group id="phone_number" className="mb-4">
+                <FormBS.Label>Phone Number</FormBS.Label>
+                <InputGroup>
+                  <InputGroup.Text></InputGroup.Text>
+                  <Field
+                    name="phone_number"
+                    type="text"
+                    className="form-control"
+                    onChange={handlePhoneChange}
+                  />
+                </InputGroup>
+                <ErrorMessage
+                  name="phone_number"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </FormBS.Group>
+            </Col>
                 <Col md={4} className="mb-3">
                   <FormBS.Group id="business_address" className="mb-4">
                     <FormBS.Label>Business Address</FormBS.Label>

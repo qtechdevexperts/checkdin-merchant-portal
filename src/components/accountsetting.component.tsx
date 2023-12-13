@@ -56,7 +56,7 @@ const AccountSetting: React.FC = () => {
         current_password: "",
         new_password: ""
     }
-    
+
     useEffect(() => {
         let accessTkn = localStorage.getItem("accessToken");
         let id = localStorage.getItem("merchantId");
@@ -66,22 +66,28 @@ const AccountSetting: React.FC = () => {
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
-        
-      };
+
+    };
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
-    
+
     const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAddress(event.target.value);
     };
 
     const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(event.target.value);
-    };
-  
-
+        event.persist(); // Ensure that the event is not nullified
+        const inputValue = event.target.value;
     
+        // Check if the input consists of one or more numeric characters and optional plus sign
+        if (/^[0-9+]+$/.test(inputValue) || inputValue === "") {
+            setPhoneNumber((prevPhoneNumber) => {
+                return inputValue;
+            });
+        }
+    };
+
     const fetchProfile = async (id: any, accessTkn: any) => {
         let res = await fetch(
             `${MERCHANT_USER_GET}?id=${id}`,
@@ -114,7 +120,7 @@ const AccountSetting: React.FC = () => {
         }
     };
 
- 
+
     // configurations
     let initialValues: {
         name: string;
@@ -131,37 +137,51 @@ const AccountSetting: React.FC = () => {
     };
 
     const updateUser = async (formValue: any) => {
+        if (phone_number === null || phone_number == "" ) {
+
+            setMessage("Phone number is required");
+            setSuccessful(false);
+            return;
+        }
+        else if (!phone_number || phone_number.length < 9 || phone_number.length > 15) {
+            setMessage("Phone number must be between 9 and 15 characters");
+            setSuccessful(false);
+            return;
+        }
+    
         let formData = new FormData();
         const accessTkn = localStorage.getItem("accessToken") || "";
         let id = localStorage.getItem("merchantId");
-        formData.append("id",parseInt(id || '0', 10).toString());
+        formData.append("id", parseInt(id || '0', 10).toString());
         formData.append("name", name);
         formData.append("contact_number", phone_number);
         formData.append("email", email);
         formData.append("address", address);
-        formData.append("new_password", formValue.new_password == undefined? null :  formValue.new_password);
+        formData.append("new_password", formValue.new_password === undefined ? null : formValue.new_password);
         formData.append("current_password", formValue.current_password);
+    
         try {
             const response = await fetch(MERCHANT_USER_UPDATE, {
                 method: "PATCH",
                 headers: {
-                    // "content-type": "multipart/form-data; boundary=------WebKitFormBoundaryaM6nZ8doKkK6IJxi",
                     Authorization: `Bearer ${JSON.parse(accessTkn)}`,
                 },
                 body: formData,
             });
             const responseData = await response.json();
+            console.warn('responseData', responseData)
             if (response.ok) {
                 setMessage("Account Settings Saved Successfully");
-                setSuccessful(true)
+                setSuccessful(true);
             } else {
                 setMessage(responseData.data.message);
-                setSuccessful(false)
+                setSuccessful(false);
             }
         } catch (error) {
             console.error("Error updating user:", error);
         }
     };
+    
 
     return (
         <>
@@ -170,7 +190,7 @@ const AccountSetting: React.FC = () => {
                 <div className="content">
                     <NavBar />
                     <div>
-                        
+
                     </div>
                     <Card className="mt-4">
                         <Card.Body>
@@ -215,6 +235,7 @@ const AccountSetting: React.FC = () => {
                                                         className="form-control"
                                                         value={email}
                                                         onChange={handleEmailChange}
+                                                        disabled={true}
                                                     />
                                                 </InputGroup>
                                                 <ErrorMessage
@@ -287,7 +308,6 @@ const AccountSetting: React.FC = () => {
                                                     className="alert alert-danger"
                                                 />
                                             </FormBS.Group>
-
                                         </Col>
                                         <Col>
                                         </Col>
@@ -308,8 +328,8 @@ const AccountSetting: React.FC = () => {
 
                     <Card className="mt-4">
                         <Card.Body>
-                        <h5 className="mb-4">Change Password</h5>
-                        <Formik
+                            <h5 className="mb-4">Change Password</h5>
+                            <Formik
                                 enableReinitialize
                                 initialValues={passwordInitialValues}
                                 validationSchema={passwordValidationSchema}
@@ -359,27 +379,27 @@ const AccountSetting: React.FC = () => {
                                     </Row>
                                     <Row className="align-items-center">
                                         <Col md={12}>
-                                        <div className="mt-1 text-left">
+                                            <div className="mt-1 text-left">
                                                 <Button className="w-10 mb-3" variant="primary" type="submit">
                                                     Save Account Settings
                                                 </Button>
                                                 {message && (
-                                                <div className="d-flex justify-content-center text-center">
-                                                    <div
-                                                        className={
-                                                            successful
-                                                                ? "alert alert-success w-50"
-                                                                : "alert alert-danger w-50"
-                                                        }
-                                                        role="alert"
-                                                    >
-                                                        {message}
+                                                    <div className="d-flex justify-content-center text-center">
+                                                        <div
+                                                            className={
+                                                                successful
+                                                                    ? "alert alert-success w-50"
+                                                                    : "alert alert-danger w-50"
+                                                            }
+                                                            role="alert"
+                                                        >
+                                                            {message}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
                                             </div>
-                                           
-                                            </Col>
+
+                                        </Col>
                                     </Row>
                                     <Row>
 
