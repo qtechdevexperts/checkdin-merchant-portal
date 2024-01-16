@@ -114,25 +114,19 @@ export const authSignoutConf = async () => {
   localStorage.setItem("tokenType", "");
 };
 
-export const forgotPassword = async (username: string) => {
-  let body = { username };
-
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  return await axios.post(AUTH_FORGOTPASSWORD_URL, body, axiosConfig);
+export const forgotPassword = async (email: string) => {
+  let body = { email };
+  console.warn('body', body)
+  return await axios.post(AUTH_FORGOTPASSWORD_URL, body);
 };
 
 export const forgotPasswordConfirm = async (
   code: string,
   password: string,
-  username: string
+  email: string
 ) => {
-  const body = { code, password, username };
-
+  // const body = { reset_password_code, password, email };
+  const body = {email: code, password: password,  reset_password_code: email}
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json",

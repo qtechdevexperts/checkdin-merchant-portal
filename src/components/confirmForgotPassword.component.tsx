@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+
 import {
   faAngleLeft,
   faUnlockAlt,
@@ -32,11 +34,11 @@ const ConfirmForgotPassword: React.FC = () => {
   const initialValues: {
     code: string;
     password: string;
-    confirmPassword: string;
+    email: string;
   } = {
     code: "",
     password: "",
-    confirmPassword: "",
+    email: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -47,41 +49,31 @@ const ConfirmForgotPassword: React.FC = () => {
       .matches(/^(?=.*[!@#$%^&*])/, "Password requires a special character")
       .matches(/^(?=.*[A-Z])/, "Password requires an uppercase letter")
       .matches(/^(?=.*[0-9])/, "Password requires a number"),
-    confirmPassword: Yup.string()
-      .required("Please retype your password.")
-      .oneOf([Yup.ref("password")], "Your passwords do not match."),
+    email: Yup.string().required("This field is required."),
   });
-
-  const handleSubmit = (formValue: { code: string; password: string }) => {
-    const { code, password } = formValue;
-
-    const username = localStorage.getItem("FPUsername") || "";
-
+  const handleSubmit = (formValue: { code: string; password: string, email: string }) => {
+    const { code, password, email } = formValue;
+    // const username = localStorage.getItem("FPUsername") || "";
     setLoading(true);
 
     try {
-      console.log(username);
-
-      forgotPasswordConfirm(code, password, username).then((response: any) => {
-        console.log(response);
-
-        if (response.data.body) {
+      console.log('code, password,email', code, password, email);
+      forgotPasswordConfirm(email, password, code).then((response: any) => {
+        console.log(response, 'response on change');
+        if (response.data) {
           setSuccessful(true);
           setMessage(
             "Password change successful! Redirecting you to login page."
           );
-
           setTimeout(() => {
             navigate("/login");
           }, 3000);
         }
-
         if (response.data.errorMessage) {
           setSuccessful(false);
           setMessage(response.data.errorMessage);
         }
       });
-
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -90,7 +82,6 @@ const ConfirmForgotPassword: React.FC = () => {
       setMessage("An error has occured.");
     }
   };
-
   return (
     <>
       <main>
@@ -122,8 +113,8 @@ const ConfirmForgotPassword: React.FC = () => {
                   <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(data) => {
-                      handleSubmit(data);
+                    onSubmit={(formData) => {
+                      handleSubmit(formData);
                     }}
                   >
                     <Form>
@@ -146,6 +137,24 @@ const ConfirmForgotPassword: React.FC = () => {
                             className="alert alert-danger mt-1"
                           />
                         </FormBS.Group>
+                        <FormBS.Group id="email" className="mb-4">
+                          <FormBS.Label>Email</FormBS.Label>
+                          <InputGroup>
+                            <InputGroup.Text>
+                              <FontAwesomeIcon icon={faEnvelope} />
+                            </InputGroup.Text>
+                            <Field
+                              name="email"
+                              type="email"
+                              className="form-control"
+                            />
+                          </InputGroup>
+                          <ErrorMessage
+                            name="email"
+                            component="div"
+                            className="alert alert-danger"
+                          />
+                        </FormBS.Group>
                         <FormBS.Group id="password" className="mb-4">
                           <FormBS.Label>New Password</FormBS.Label>
                           <InputGroup>
@@ -160,24 +169,6 @@ const ConfirmForgotPassword: React.FC = () => {
                           </InputGroup>
                           <ErrorMessage
                             name="password"
-                            component="div"
-                            className="alert alert-danger mt-1"
-                          />
-                        </FormBS.Group>
-                        <FormBS.Group id="confirmPassword" className="mb-4">
-                          <FormBS.Label>Confirm New Password</FormBS.Label>
-                          <InputGroup>
-                            <InputGroup.Text>
-                              <FontAwesomeIcon icon={faUnlockAlt} />
-                            </InputGroup.Text>
-                            <Field
-                              name="confirmPassword"
-                              type="password"
-                              className="form-control"
-                            />
-                          </InputGroup>
-                          <ErrorMessage
-                            name="confirmPassword"
                             component="div"
                             className="alert alert-danger mt-1"
                           />

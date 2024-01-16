@@ -27,6 +27,9 @@ const UpdatedUser: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
   const [File, setFile] = useState<any>();
+  const [selectedPosition, setSelectedPosition] = useState<any>(null);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
+
   const [merchantProfile, setMerchantProfile] = useState({
     name: "",
     description: "",
@@ -80,6 +83,7 @@ const UpdatedUser: React.FC = () => {
           business_address: response.data.address,
           phone_number: response.data.contact_number,
         });
+        setSelectedAddress(response.data.address)
       }
     } catch (err) {
       console.log(err);
@@ -147,21 +151,33 @@ const UpdatedUser: React.FC = () => {
     // .matches(/^[0-9]+$/, "Must be only digits")
     // .max(10, "Only ten digits are allowed")
   });
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
 
+    // Check if the input consists of only numeric characters
+    if (/^[0-9+]+$/.test(inputValue) || inputValue === "") {
+      formikRef.current.setFieldValue("phone_number", inputValue);
+    }
+  };
   // Function
   const updateUser = async (formValue: any) => {
+    console.log('selectedPosition' , selectedPosition)
+    console.log('selectedAddress' , selectedAddress)
     const accessTkn = localStorage.getItem("accessToken") || "";
     let id = localStorage.getItem("merchantId");
+
+
+
     let formData = new FormData();
     formData.append("id", JSON.stringify(id));
     formData.append("name", formValue.business_name);
     formData.append("contact_number", formValue.phone_number);
     formData.append("description", formValue.business_volume);
-    formData.append("address", formValue.business_address);
-    formData.append("website", formValue.business_website);
+    formData.append("address", selectedAddress); //selectedAddress
+    formData.append("website", formValue.business_website); 
     formData.append("profile_img", File);
-    formData.append("latitude", JSON.stringify(positions.lat));
-    formData.append("longitude", JSON.stringify(positions.lng));
+    formData.append("latitude", JSON.stringify(selectedPosition.lat));
+    formData.append("longitude", JSON.stringify(selectedPosition.lng));
     // let body = {
     //   id: id,
     //   name: formValue.business_name,
@@ -301,23 +317,24 @@ const UpdatedUser: React.FC = () => {
                   </FormBS.Group>
                 </Col>
                 <Col md={4} className="mb-3">
-                  <FormBS.Group id="phone_number" className="mb-4">
-                    <FormBS.Label>Phone Number</FormBS.Label>
-                    <InputGroup>
-                      <InputGroup.Text></InputGroup.Text>
-                      <Field
-                        name="phone_number"
-                        type="text"
-                        className="form-control"
-                      />
-                    </InputGroup>
-                    <ErrorMessage
-                      name="phone_number"
-                      component="div"
-                      className="alert alert-danger"
-                    />
-                  </FormBS.Group>
-                </Col>
+              <FormBS.Group id="phone_number" className="mb-4">
+                <FormBS.Label>Phone Number</FormBS.Label>
+                <InputGroup>
+                  <InputGroup.Text></InputGroup.Text>
+                  <Field
+                    name="phone_number"
+                    type="text"
+                    className="form-control"
+                    onChange={handlePhoneChange}
+                  />
+                </InputGroup>
+                <ErrorMessage
+                  name="phone_number"
+                  component="div"
+                  className="alert alert-danger"
+                />
+              </FormBS.Group>
+            </Col>
                 <Col md={4} className="mb-3">
                   <FormBS.Group id="business_address" className="mb-4">
                     <FormBS.Label>Business Address</FormBS.Label>
@@ -336,8 +353,16 @@ const UpdatedUser: React.FC = () => {
                     />
                   </FormBS.Group>
                 </Col>
-                <Map setPosition={setPositions} />
-                <Col md={4} className="mb-3">
+
+                  <FormBS.Group >
+                    <FormBS.Label>Search Address</FormBS.Label>
+                    <Map
+                    setPosition={setSelectedPosition} // Callback to update the position state
+                    setAddress={setSelectedAddress}
+                    selectedAddressText={selectedAddress} // Callback to update the address state
+                  />
+                  </FormBS.Group>
+                <Col md={4} className="mb-3 padding">
                   <FormBS.Group id="profile_picture" className="mb-4">
                     <FormBS.Label>Profile Picture</FormBS.Label>
                     <InputGroup>

@@ -1,4 +1,5 @@
 export const RoutePath = {
+    AccountSetting: { path: "/accountsetting"},
     BusinessAccount: { path: "/"},
     CouponManager: { path: "/couponmanager"},
     Statistics: { path: "/statistics"},

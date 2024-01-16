@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import SimpleBar from "simplebar-react";
 import { CSSTransition } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faBuilding, faTicket, faChartColumn, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faBuilding, faTicket, faChartColumn, faCircleCheck, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import { Nav, Image, Badge, Navbar, Button } from "@themesberg/react-bootstrap";
 import { RoutePath } from "../../router/routes";
 
@@ -58,8 +58,9 @@ const Sidebar: React.FC = () => {
                             </Nav.Link>
                         </div>
                         <Nav className="flex-column pt-3 pt-md-0">
-                            <NavItem title="ChekdIn" icon={faCircleCheck} />
-                            <NavItem title="Business Account" icon={faBuilding} link={RoutePath.BusinessAccount.path} />
+                            {/* <NavItem title="ChekdIn" icon={faCircleCheck} /> */}
+                            <NavItem title="Account Settings" icon={faUserEdit} link={RoutePath.AccountSetting.path} />
+                            <NavItem title="Business Profile" icon={faBuilding} link={RoutePath.BusinessAccount.path} />
                             <NavItem title="Coupon Manager" icon={faTicket} link={RoutePath.CouponManager.path}/>
                             <NavItem title="Statistics" icon={faChartColumn} link={RoutePath.Statistics.path} badgeText="Soon" badgeBg="warning"/>
                         </Nav>
