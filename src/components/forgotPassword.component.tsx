@@ -37,7 +37,8 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = (formValue: { username: string }) => {
     const { username } = formValue;
-
+    console.warn('username', username)
+    const email = username;
     setLoading(true);
 
     try {
@@ -45,21 +46,21 @@ const ForgotPassword: React.FC = () => {
 
       localStorage.setItem("FPUsername", username);
 
-      forgotPassword(username).then((response: any) => {
-        console.log(response);
+      forgotPassword(email).then((response: any) => {
+        console.log('response', response);
 
-        if (response.data.body) {
-          const parsedRes = JSON.parse(response.data.body);
+        if (response.data) {
+          // const parsedRes = JSON.parse(response.data.body);
           setSuccessful(true);
-          setMessage(
-            `Confirmation has been sent to ${parsedRes.CodeDeliveryDetails.Destination}. Redirecting you to create password page.`
-          );
+          // setMessage(
+          //   `Confirmation has been sent to ${parsedRes.CodeDeliveryDetails.Destination}. Redirecting you to create password page.`
+          // );
 
           setTimeout(() => {
             navigate("/confirmforgotpassword");
           }, 3000);
 
-          console.log(parsedRes);
+          // console.log(parsedRes);
         }
 
         if (response.data.errorMessage) {
@@ -70,7 +71,7 @@ const ForgotPassword: React.FC = () => {
 
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      console.log(e, 'error');
       setLoading(false);
       setSuccessful(false);
       setMessage("An error has occured.");
