@@ -52,9 +52,9 @@ const ForgotPassword: React.FC = () => {
         if (response.data) {
           // const parsedRes = JSON.parse(response.data.body);
           setSuccessful(true);
-          // setMessage(
-          //   `Confirmation has been sent to ${parsedRes.CodeDeliveryDetails.Destination}. Redirecting you to create password page.`
-          // );
+          setMessage(
+            `Confirmation has been sent to your email. Redirecting you to create password page.`
+          );
 
           setTimeout(() => {
             navigate("/confirmforgotpassword");
