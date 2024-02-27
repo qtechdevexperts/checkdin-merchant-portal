@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/dashboard/sidebar.component";
 import NavBar from "../components/dashboard/navbar.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,21 +14,98 @@ import { renderWindow } from "../services/user.service";
 
 const Statistics: React.FC = () => {
   const [title, setTitle] = React.useState("ChekdIn Coupons");
-  let headerNum = "0";
+  const [value, setValue] = React.useState<number[]>([]); // Track open rows
+  const [topUser, setTopUser] = React.useState<any[]>([]);
   const [tableFlag, setTableFlag] = React.useState(false);
+  const [checkdinCoupon, setCheckdinCoupon] = React.useState<number[]>([]); // Track open rows
+  const [viewerCoupon, setViewerCoupon] = React.useState<number[]>([]); // Track open rows
+  const [redeemCoupon, setRedeemCoupon] = React.useState<number[]>([]); // Track open rows\
+  const [chekdinPer, setChekdinPer] = React.useState<number[]>([]); // Track open rows
+  const [viewerPer, setViewerPer] = React.useState<number[]>([]); // Track open rows
+  const [redeemPer, setRedeemPer] = React.useState<number[]>([]); // Track open rows
 
   useEffect(() => {
     (async () => {
       window.addEventListener("resize", renderWindow);
     })();
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = localStorage.getItem("merchantId");
+        const accessToken = localStorage.getItem("accessToken");
 
+        if (id && accessToken) {
+          const res = await fetch(`https://api.chekdin.com/api/v1/merchant/merchant-stats?merchant_id=${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${JSON.parse(accessToken)}`
+            }
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            const stats = data?.data?.[0];
+
+            if (stats) {
+              setCheckdinCoupon(stats.checkdinCoupon);
+              setViewerCoupon(stats.viewerCoupon);
+              setRedeemCoupon(stats.redeemedCoupon);
+              setChekdinPer(stats.viewer_percentage_increase)
+              setViewerPer(stats.checkdin_percentage_increase)
+              setRedeemPer(stats.redeemed_percentage_increase)
+            }
+          } else {
+            console.error('Failed to fetch data:', res.status);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = localStorage.getItem("merchantId");
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (id && accessToken) {
+          const res = await fetch(`https://api.chekdin.com/api/v1/merchant/top-chekdin-users?merchant_id=${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${JSON.parse(accessToken)}`
+            }
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            const stats = data?.data;
+
+            if (stats) {
+              setTopUser(stats)
+              console.warn('stats', stats)
+            }
+          } else {
+            console.error('Failed to fetch data:', res.status);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const SalesValueChart = (chartData: any, chartLabels: any) => {
     return <></>;
   };
 
   const SalesValueWidget = (props: any) => {
-    const { title, value, percentage } = props;
+    const { title, value, percentage, couponName, couponValue } = props;
+    console.warn('title', title, value)
     const percentageIcon = percentage < 0 ? faAngleDown : faAngleUp;
     const percentageColor = percentage < 0 ? "text-danger" : "text-success";
 
@@ -38,14 +115,14 @@ const Statistics: React.FC = () => {
           <Card.Header className="d-flex flex-row align-items-center flex-0">
             <div className="d-block">
               <h5 className="fw-normal mb-2">{title}</h5>
-              <h3>{value}</h3>
+              <h3>{couponValue}</h3>
               <small className="fw-bold mt-2">
                 <span className="me-2">Yesterday</span>
                 <FontAwesomeIcon
                   icon={percentageIcon}
                   className={`${percentageColor} me-1`}
                 />
-                <span className={percentageColor}>{percentage}%</span>
+                <span className={percentageColor}>  {percentage !== null ? `${String(percentage).split('.')[0]}` : "0"}%</span>
               </small>
             </div>
             <div className="d-flex ms-auto">
@@ -83,16 +160,21 @@ const Statistics: React.FC = () => {
             <Table responsive hover className="user-table align-items-center">
               <thead className="align-items-center">
                 <tr>
-                  <th className="border-bottom">User</th>
-                  <th className="border-bottom">Impressions</th>
+                  <th className="border-bottom">User Name</th>
+                  <th className="border-bottom">Email</th>
+                  <th className="border-bottom">Chekdin Count</th>
+                  <th className="border-bottom">Percentage</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <span>Results will show one month after usage</span>
-                  </td>
-                </tr>
+                {topUser.map((user, index) => (
+                  <tr key={index}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.checkin_count}</td>
+                    <td>{user.percentage_increase !== null ? `${String(percentage).split('.')[0]}` : "0"}%</td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </Card.Body>
@@ -100,6 +182,7 @@ const Statistics: React.FC = () => {
       );
     }
   };
+
 
   const CounterWidget = (props: any) => {
     const { icon, iconColor, category, title, percentage } = props;
@@ -169,13 +252,14 @@ const Statistics: React.FC = () => {
         <NavBar />
         <Row>
           <Col xs={6} className="mb-4 d-none d-sm-block">
-            <h1>Statistics</h1>
+            <h1>Analytics</h1>
           </Col>
           <Col xs={12} className="mb-4 d-sm-block">
             <SalesValueWidget
               title={title}
-              value={headerNum}
-              percentage={headerNum}
+              percentage={title == 'ChekdIn Coupons' ? chekdinPer : title === 'Viewer Coupons' ? viewerPer : title === 'Redeems' ? redeemPer : 0} // Pass the coupon value here
+              couponName="ChekdIn Coupons" // Pass the coupon name here
+              couponValue={title == 'ChekdIn Coupons' ? checkdinCoupon : title === 'Viewer Coupons' ? viewerCoupon : title === 'Redeems' ? redeemCoupon : 0} // Pass the coupon value here
             />
           </Col>
           {/* <Col xs={12} className="mb-4 d-sm-none">
@@ -190,9 +274,9 @@ const Statistics: React.FC = () => {
           <Col xs={12} sm={6} xl={4} className="mb-4">
             <CounterWidget
               category="ChekdIn Coupons"
-              title="0"
+              title={checkdinCoupon}
               period="Feb 1 - Apr 1"
-              percentage={0}
+              percentage={chekdinPer !== null ? String(chekdinPer).split('.')[0] : "0"}
               icon={faBuilding}
               iconColor="shape-secondary"
             />
@@ -200,9 +284,9 @@ const Statistics: React.FC = () => {
           <Col xs={12} sm={6} xl={4} className="mb-4">
             <CounterWidget
               category="Viewer Coupons"
-              title={headerNum}
+              title={viewerCoupon}
               period="Feb 1 - Apr 1"
-              percentage={0}
+              percentage={viewerPer !== null ? String(viewerPer).split('.')[0] : "0"}
               icon={faUserAlt}
               iconColor="shape-tertiary"
             />
@@ -210,9 +294,9 @@ const Statistics: React.FC = () => {
           <Col xs={12} sm={6} xl={4} className="mb-4">
             <CounterWidget
               category="Redeems"
-              title={headerNum}
+              title={redeemCoupon}
               period="Feb 1 - Apr 1"
-              percentage={0}
+              percentage={redeemPer !== null ? String(redeemPer).split('.')[0] : "0"}
               icon={faCheckSquare}
               iconColor="shape-primary"
             />
@@ -222,7 +306,6 @@ const Statistics: React.FC = () => {
           <Col xs={12} sm={6} xl={4} className="mb-4">
             <CounterWidget
               category="Top 10 ChekdIn Users"
-              title="N / A"
               period="Feb 1 - Apr 1"
               icon={faUserAlt}
               iconColor="shape-secondary"
