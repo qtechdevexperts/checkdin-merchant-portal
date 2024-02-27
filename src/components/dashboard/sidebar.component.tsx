@@ -62,7 +62,9 @@ const Sidebar: React.FC = () => {
                             <NavItem title="Account Settings" icon={faUserEdit} link={RoutePath.AccountSetting.path} />
                             <NavItem title="Business Profile" icon={faBuilding} link={RoutePath.BusinessAccount.path} />
                             <NavItem title="Coupon Manager" icon={faTicket} link={RoutePath.CouponManager.path}/>
-                            <NavItem title="Statistics" icon={faChartColumn} link={RoutePath.Statistics.path} badgeText="Soon" badgeBg="warning"/>
+                            <NavItem title="Analytics" icon={faChartColumn} link={RoutePath.Statistics.path} 
+                            // badgeText="Soon" badgeBg="warning"
+                            />
                         </Nav>
                     </div>
                 </SimpleBar>
