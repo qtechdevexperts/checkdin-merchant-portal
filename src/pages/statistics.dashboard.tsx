@@ -161,18 +161,18 @@ const Statistics: React.FC = () => {
               <thead className="align-items-center">
                 <tr>
                   <th className="border-bottom">User Name</th>
-                  <th className="border-bottom">Email</th>
+                  {/* <th className="border-bottom">Email</th> */}
                   <th className="border-bottom">Chekdin Count</th>
-                  <th className="border-bottom">Percentage</th>
+                  {/* <th className="border-bottom">Percentage</th> */}
                 </tr>
               </thead>
               <tbody>
                 {topUser.map((user, index) => (
                   <tr key={index}>
                     <td>{user.name}</td>
-                    <td>{user.email}</td>
+                    {/* <td>{user.email}</td> */}
                     <td>{user.checkin_count}</td>
-                    <td>{user.percentage_increase !== null ? `${String(percentage).split('.')[0]}` : "0"}%</td>
+                    {/* <td>{user.percentage_increase !== null ? `${String(percentage).split('.')[0]}` : "0"}%</td> */}
                   </tr>
                 ))}
               </tbody>
