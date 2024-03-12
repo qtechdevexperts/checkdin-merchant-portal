@@ -11,6 +11,96 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Card, Table } from "@themesberg/react-bootstrap";
 import { renderWindow } from "../services/user.service";
+import { DateRangePicker ,Loader } from 'rsuite';
+import subDays from 'date-fns/subDays';
+import addDays from 'date-fns/addDays';
+import startOfMonth from 'date-fns/startOfMonth';
+import endOfMonth from 'date-fns/endOfMonth';
+import addMonths from 'date-fns/addMonths';
+import { startOfWeek, endOfWeek, format } from 'date-fns';
+import { date } from "yup";
+import { start } from "repl";
+// Define the type for the value parameter
+// Define the type for the value parameter
+type ValueFunction = (value?: [Date, Date]) => [Date, Date];
+
+const predefinedRanges:any[] = [
+  {
+    label: 'Today',
+    value: [new Date(), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'Yesterday',
+    value: [addDays(new Date(), -1), addDays(new Date(), -1)],
+    placement: 'left'
+  },
+  {
+    label: 'This week',
+    value: [startOfWeek(new Date()), endOfWeek(new Date())],
+    placement: 'left'
+  },
+  {
+    label: 'Last 7 days',
+    value: [subDays(new Date(), 6), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'Last 30 days',
+    value: [subDays(new Date(), 29), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'This month',
+    value: [startOfMonth(new Date()), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'Last month',
+    value: [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1))],
+    placement: 'left'
+  },
+  {
+    label: 'This year',
+    value: [new Date(new Date().getFullYear(), 0, 1), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'Last year',
+    value: [new Date(new Date().getFullYear() - 1, 0, 1), new Date(new Date().getFullYear(), 0, 0)],
+    placement: 'left'
+  },
+  {
+    label: 'All time',
+    value: [new Date(new Date().getFullYear() - 1, 0, 1), new Date()],
+    placement: 'left'
+  },
+  {
+    label: 'Last week',
+    closeOverlay: false,
+    value: (value: Date[]) => {
+      const [start = new Date()] = value || [];
+      return [
+        addDays(startOfWeek(start, { weekStartsOn: 0 }), -7),
+        addDays(endOfWeek(start, { weekStartsOn: 0 }), -7)
+      ];
+    },
+    appearance: 'default'
+  },
+  {
+    label: 'Next week',
+    closeOverlay: false,
+    value: (value: Date[]) => {
+      const [start = new Date()] = value || [];
+      return [
+        addDays(startOfWeek(start, { weekStartsOn: 0 }), 7),
+        addDays(endOfWeek(start, { weekStartsOn: 0 }), 7)
+      ];
+    },
+    appearance: 'default'
+  }
+];
+
 
 const Statistics: React.FC = () => {
   const [title, setTitle] = React.useState("ChekdIn Coupons");
@@ -23,6 +113,28 @@ const Statistics: React.FC = () => {
   const [chekdinPer, setChekdinPer] = React.useState<number[]>([]); // Track open rows
   const [viewerPer, setViewerPer] = React.useState<number[]>([]); // Track open rows
   const [redeemPer, setRedeemPer] = React.useState<number[]>([]); // Track open rows
+  const [loading, setLoading] = useState(false);
+
+  const currentWeekStart =startOfWeek(new Date());
+  const currentWeekEnd =endOfWeek(new Date());
+  
+  const [selectedDateRange, setSelectedDateRange] = useState<[Date, Date] | undefined>([currentWeekStart, currentWeekEnd]);
+const [startDate, setStartDate] = useState<Date | null>(currentWeekStart);
+const [endDate, setEndDate] = useState<Date | null>(currentWeekEnd);
+
+const handleDateRangeChange = (value: [Date, Date] | null) => {
+  
+  if (value !== null) {
+    setSelectedDateRange(value);
+    fetchData(value[0],value[1]);
+    fetchDataUser(value[0],value[1]);
+  } else {
+    setSelectedDateRange(undefined);
+  }
+  // You can also perform any additional actions here, such as calling an API with the selected date range
+  console.log("Selected Date Range:", value);
+};
+
 
   useEffect(() => {
     (async () => {
@@ -30,75 +142,117 @@ const Statistics: React.FC = () => {
     })();
   }, []);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id = localStorage.getItem("merchantId");
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (id && accessToken) {
-          const res = await fetch(`https://api.chekdin.com/api/v1/merchant/merchant-stats?merchant_id=${id}`, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${JSON.parse(accessToken)}`
-            }
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            const stats = data?.data?.[0];
-
-            if (stats) {
-              setCheckdinCoupon(stats.checkdinCoupon);
-              setViewerCoupon(stats.viewerCoupon);
-              setRedeemCoupon(stats.redeemedCoupon);
-              setChekdinPer(stats.viewer_percentage_increase)
-              setViewerPer(stats.checkdin_percentage_increase)
-              setRedeemPer(stats.redeemed_percentage_increase)
-            }
-          } else {
-            console.error('Failed to fetch data:', res.status);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+    fetchData(startDate,endDate);
   }, []);
+
+  const fetchData = async (sDate : any, eDate : any) => {
+    try {
+      const id = localStorage.getItem("merchantId");
+      const accessToken = localStorage.getItem("accessToken");
+      let startDate_ = "";
+      let endDate_ ="";
+    
+      if(sDate != null){
+        startDate_=formatDate(sDate);
+      }
+      if(eDate != null){
+         endDate_ = formatDate(eDate);
+      }
+      
+      if (id && accessToken && startDate && endDate) {
+        setLoading(true);
+        const res = await fetch(`https://api.chekdin.com/api/v1/merchant/merchant-stats?merchant_id=${id}&start-date=${startDate_}&end-date=${endDate_}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+          }
+        });
+
+        if (res.ok) {
+          setLoading(false);
+
+          const data = await res.json();
+          const stats = data?.data?.[0];
+
+          if (stats) {
+            setCheckdinCoupon(stats.checkdinCoupon);
+            setViewerCoupon(stats.viewerCoupon);
+            setRedeemCoupon(stats.redeemedCoupon);
+            setChekdinPer(stats.viewer_percentage_increase)
+            setViewerPer(stats.checkdin_percentage_increase)
+            setRedeemPer(stats.redeemed_percentage_increase)
+          }
+        } else {
+          setLoading(false);
+          console.error('Failed to fetch data:', res.status);
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id = localStorage.getItem("merchantId");
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (id && accessToken) {
-          const res = await fetch(`https://api.chekdin.com/api/v1/merchant/top-chekdin-users?merchant_id=${id}`, {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${JSON.parse(accessToken)}`
-            }
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            const stats = data?.data;
-
-            if (stats) {
-              setTopUser(stats)
-              console.warn('stats', stats)
-            }
-          } else {
-            console.error('Failed to fetch data:', res.status);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+    
+    fetchDataUser(startDate,endDate);
   }, []);
+
+
+  const fetchDataUser = async (sDate : any,eDate : any) => {
+    try {
+      const id = localStorage.getItem("merchantId");
+      const accessToken = localStorage.getItem("accessToken");
+      let startDate_ = "";
+      let endDate_ ="";
+    
+      if(sDate != null){
+        startDate_=formatDate(sDate);
+      }
+      if(eDate != null){
+         endDate_ = formatDate(eDate);
+      }
+      if (id && accessToken && sDate && eDate) {
+        setLoading(true);
+
+        const res = await fetch(`https://api.chekdin.com/api/v1/merchant/top-chekdin-users?merchant_id=${id}&start-date=${startDate_}&end-date=${endDate_}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+          }
+        });
+
+        if (res.ok) {
+          setLoading(false);
+
+          const data = await res.json();
+          const stats = data?.data;
+
+          if (stats) {
+            setTopUser(stats)
+            console.warn('stats', stats)
+          }
+        } else {
+          setLoading(false);
+          console.error('Failed to fetch data:', res.status);
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  function formatDate(date : Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+
+
   const SalesValueChart = (chartData: any, chartLabels: any) => {
     return <></>;
   };
@@ -135,6 +289,7 @@ const Statistics: React.FC = () => {
             </div>
           </Card.Header>
           <Card.Body className="p-2">
+        
             <SalesValueChart />
           </Card.Body>
         </Card>
@@ -242,6 +397,7 @@ const Statistics: React.FC = () => {
           </Row>
         </Card.Body>
       </Card>
+        
     );
   };
 
@@ -251,10 +407,26 @@ const Statistics: React.FC = () => {
       <div className="content">
         <NavBar />
         <Row>
-          <Col xs={6} className="mb-4 d-none d-sm-block">
+          <Col xs={3} className="mb-4 d-none d-sm-block">
             <h1>Analytics</h1>
+            <Row>  
+          <label>Please select date range:</label>
+            <DateRangePicker
+             defaultValue={selectedDateRange && selectedDateRange.length === 2 ? selectedDateRange : undefined}
+            onChange={handleDateRangeChange}
+            ranges={predefinedRanges}
+            showOneCalendar
+            placeholder="Date range"
+            style={{ width: 300 }}
+            onShortcutClick={(shortcut, event) => {
+              console.log(shortcut);
+            }}
+          />
+            {loading && <Loader size="xs" content="Loading..." />} {/* Display loader if loading state is true */}
+          </Row>
           </Col>
           <Col xs={12} className="mb-4 d-sm-block">
+          
             <SalesValueWidget
               title={title}
               percentage={title == 'ChekdIn Coupons' ? chekdinPer : title === 'Viewer Coupons' ? viewerPer : title === 'Redeems' ? redeemPer : 0} // Pass the coupon value here
