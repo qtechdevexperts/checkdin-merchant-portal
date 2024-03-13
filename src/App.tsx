@@ -18,7 +18,7 @@ import ForgotPassword from "./components/forgotPassword.component";
 import ConfirmForgotPassword from "./components/confirmForgotPassword.component";
 import CouponHistory from "./components/manager/history.manager";
 import AccountSetting from "./components/accountsetting.component";
-
+import "rsuite/dist/rsuite.css";
 // eslint-disable-next-line
 
 const App: React.FC = () => {
