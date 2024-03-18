@@ -49,7 +49,7 @@ const Login: React.FC<Props> = () => {
     auth_login(username, password)
       .then((res: any) => {
         setLoading(false);
-        console.log("res==>", res.data.data.data.access_token);
+        console.log("res==> id", res.data.data.data.profile.merchant, res.data.data);
         console.log("res==>", res.data.data.data.access_token);
         if (res?.data?.data?.data?.access_token) {
           // setMessage("login Success")

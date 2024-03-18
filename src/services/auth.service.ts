@@ -6,7 +6,10 @@ import {
   AUTH_FORGOTPASSWORD_URL,
   AUTH_CONFIRMFORGOTPASSWORD_URL,
 } from "../constants.js";
-
+interface ForgotPasswordData {
+  email: string;
+  token: string;
+}
 export const auth_register = async (
   email: string,
   phone_number: string,
@@ -114,9 +117,9 @@ export const authSignoutConf = async () => {
   localStorage.setItem("tokenType", "");
 };
 
-export const forgotPassword = async (email: string) => {
-  let body = { email };
-  console.warn('body', body)
+export const forgotPassword = async ({ email, token }: ForgotPasswordData) => {
+  const body = { email, token };
+  console.warn('body', body);
   return await axios.post(AUTH_FORGOTPASSWORD_URL, body);
 };
 

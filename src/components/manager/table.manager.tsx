@@ -48,7 +48,6 @@ const CouponManagerTable: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [modalShow, setModalShow] = React.useState(false);
   const qrCodeRef: any = useRef(null);
-
   const fetchCoupens = async () => {
     let accessTkn = localStorage.getItem("accessToken") || "";
     const res = await fetch(
@@ -62,14 +61,22 @@ const CouponManagerTable: React.FC = () => {
     let response = await res.json();
     try {
       if (res.ok && response) {
-        // console.log("data", response.data)
-        setTable(response.data);
-        setData(response.data);
+        // Sort coupons array based on creation date in descending order
+        const sortedCoupons = response.data.sort((a: any, b: any) => {
+          const dateA = new Date(a.timeStamp).getTime();
+          const dateB = new Date(b.timeStamp).getTime();
+          return dateB - dateA;
+        });
+        // Prepend the sorted coupons to the existing data array
+        setData(sortedCoupons.concat(data));
+        setTable(sortedCoupons.concat(data));
       }
     } catch (err) {
-      console.log("error fetching coupens", err);
+      console.log("error fetching coupons", err);
     }
-  };
+};
+
+
   let todayDate: Date | string;
   useEffect(() => {
     fetchCoupens();

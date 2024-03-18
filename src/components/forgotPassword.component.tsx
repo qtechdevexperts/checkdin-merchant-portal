@@ -40,35 +40,38 @@ const ForgotPassword: React.FC = () => {
     console.warn('username', username)
     const email = username;
     setLoading(true);
-
+  
     try {
       console.log(username);
-
+  
       localStorage.setItem("FPUsername", username);
-
-      forgotPassword(email).then((response: any) => {
+  
+      // Assuming token is a string
+      const token = ""; // Empty string token
+  
+      forgotPassword({ email, token }).then((response: any) => {
         console.log('response', response);
-
+  
         if (response.data) {
           // const parsedRes = JSON.parse(response.data.body);
           setSuccessful(true);
           setMessage(
             `Confirmation has been sent to your email. Redirecting you to create password page.`
           );
-
+  
           setTimeout(() => {
             navigate("/confirmforgotpassword");
           }, 3000);
-
+  
           // console.log(parsedRes);
         }
-
+  
         if (response.data.errorMessage) {
           setSuccessful(false);
           setMessage(response.data.errorMessage);
         }
       });
-
+  
       setLoading(false);
     } catch (e) {
       console.log(e, 'error');
@@ -77,6 +80,7 @@ const ForgotPassword: React.FC = () => {
       setMessage("An error has occured.");
     }
   };
+  
 
   return (
     <>
