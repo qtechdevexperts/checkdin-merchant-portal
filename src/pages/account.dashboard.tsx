@@ -256,7 +256,7 @@ const BusinessAccount: React.FC = () => {
 
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
-                  <h5 className="mb-4">Contact</h5>
+                  {/* <h5 className="mb-4">Contact</h5> */}
                   <p>{userHash?.get('phone_number')}</p>
                 </Card.Body>
               </Card>

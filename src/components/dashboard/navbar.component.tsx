@@ -23,10 +23,12 @@ const NavBar: React.FC = () => {
   useEffect(() => {
     let accessTkn = localStorage.getItem("accessToken");
     let id = localStorage.getItem("merchantId");
+    console.warn('id local storage', id)
     fetchProfile(id, accessTkn);
   }, []);
 
   const fetchProfile = async (id: any, accessTkn: any) => {
+    console.warn('id', id)
     let res = await fetch(
       `https://api.chekdin.com/api/v1/merchant/get?id=${id}`,
       {
@@ -40,6 +42,7 @@ const NavBar: React.FC = () => {
       if (res.ok) {
         let response = await res.json();
         if (response.data) {
+          console.warn('res', response.data)
           if (response.data.profile_img_url) {
             setImg(response.data.profile_img_url);
           } else {
